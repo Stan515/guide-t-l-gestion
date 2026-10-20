@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Entretien Télégestion</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap">
+<style>
+html{color-scheme:light}body{margin:0}[hidden]{display:none!important}
+
+/* Layout : bandeau + fil d'entretien (échanges commercial / client) qui se termine par la carte active, colonne de suivi à droite. Même famille visuelle que le Guide Télégestion, accent ambre sodium. */
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --surface-2:#E9EDF1; --ink:#17222D; --muted:#566573; --line:#D3DBE2;
+  --accent:#C9771A; --accent-ink:#8B4D08; --accent-soft:#FBEBD4; --on-accent:#1B1206;
+  --client:#E4ECF4; --client-ink:#1C3A57;
+  --ok:#2E7D5B; --ok-soft:#DDF0E6; --warn:#A2551A; --warn-soft:#FBE3D3;
+  --shadow:0 1px 2px rgba(23,34,45,.06),0 6px 24px rgba(23,34,45,.07);
+  --f-display:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E151C; --surface:#16202A; --surface-2:#1D2935; --ink:#E5EBF0; --muted:#97A6B4; --line:#2A3948;
+  --accent:#E79A3B; --accent-ink:#F3B86C; --accent-soft:#35260F; --on-accent:#1B1206;
+  --client:#1C2D3E; --client-ink:#BFD6EC;
+  --ok:#5CC08F; --ok-soft:#173327; --warn:#F0A06A; --warn-soft:#3A2414;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E151C; --surface:#16202A; --surface-2:#1D2935; --ink:#E5EBF0; --muted:#97A6B4; --line:#2A3948;
+  --accent:#E79A3B; --accent-ink:#F3B86C; --accent-soft:#35260F; --on-accent:#1B1206;
+  --client:#1C2D3E; --client-ink:#BFD6EC;
+  --ok:#5CC08F; --ok-soft:#173327; --warn:#F0A06A; --warn-soft:#3A2414;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:default;opacity:.5}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.brand svg{width:28px;height:28px;flex:none}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:1.35rem;margin:0;line-height:1.1}
+.brand small{display:block;color:var(--muted);font-size:.8rem}
+.client{display:flex;align-items:center;gap:8px}
+.client label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.client input{width:180px;max-width:42vw;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.btn-obj{border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);padding:6px 12px;border-radius:6px;font-weight:600;font-size:.9rem}
+.ghost{border:1px solid var(--line);background:transparent;padding:7px 13px;border-radius:6px;font-weight:600;color:var(--muted);font-size:.92rem}
+.ghost:hover:not(:disabled){color:var(--ink);border-color:var(--muted)}
+.primary{border:0;background:var(--accent);color:var(--on-accent);padding:9px 16px;border-radius:6px;font-weight:700}
+
+.parts{display:flex;gap:4px;padding-block:10px 12px;overflow-x:auto}
+.pt{flex:1 1 0;min-width:52px;font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt i{display:block;height:4px;border-radius:2px;background:var(--line);margin-bottom:5px}
+.pt.done i{background:var(--accent);opacity:.55}
+.pt.skip i{background:repeating-linear-gradient(90deg,var(--line) 0 4px,transparent 4px 7px)}
+.pt.now{color:var(--ink)}
+.pt.now i{background:var(--accent)}
+
+main .wrap{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;padding-block:20px 60px}
+@media (max-width:900px){main .wrap{grid-template-columns:minmax(0,1fr)}}
+
+/* Fil d'entretien */
+.thread{display:flex;flex-direction:column;gap:10px;min-width:0}
+.divider{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:600;font-size:1rem;color:var(--muted);margin-top:10px}
+.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+.msg{max-width:78%;padding:9px 13px;border-radius:12px;font-size:.96rem;position:relative}
+.msg .who{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;margin-bottom:2px;opacity:.75}
+.msg.me{align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-top-left-radius:4px}
+.msg.cl{align-self:flex-end;background:var(--client);color:var(--client-ink);border-top-right-radius:4px}
+.msg.cl.obj{background:var(--warn-soft);color:var(--ink);border:1px solid var(--warn)}
+.msg.arg{align-self:flex-start;background:var(--accent-soft);border:1px dashed var(--accent);font-size:.9rem}
+.msg.resp{align-self:flex-start;background:var(--surface);border:1px solid var(--accent);border-top-left-radius:4px}
+.msg.resp .rb{display:block;margin-top:6px;font-style:italic;color:var(--accent-ink)}
+.msg.skip{align-self:center;background:transparent;color:var(--muted);font-size:.85rem;font-style:italic;padding:2px 8px}
+.msg .note{display:block;margin-top:4px;font-size:.85rem;font-style:italic;opacity:.85}
+.status{display:inline-block;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:1px 7px;border-radius:999px;margin-left:6px}
+.status.ok{background:var(--ok-soft);color:var(--ok)}
+.status.ko{background:var(--warn-soft);color:var(--warn)}
+@media (max-width:560px){.msg{max-width:92%}}
+
+/* Carte active */
+.active{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:22px;margin-top:8px;scroll-margin-bottom:24px}
+@media (max-width:520px){.active{padding:16px}}
+.eyebrow{font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600;display:flex;flex-wrap:wrap;gap:4px 8px}
+.eyebrow b{color:var(--accent-ink)}
+.active h2{font-family:var(--f-display);font-weight:600;font-size:clamp(1.45rem,3vw,1.95rem);line-height:1.15;margin:8px 0 14px;text-wrap:balance}
+.tip{background:var(--surface-2);border-radius:8px;padding:9px 12px;font-size:.92rem;margin-bottom:14px}
+.tip b{font-size:.7rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-right:6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:9px 14px;font-weight:600;text-align:left;display:inline-flex;align-items:center;gap:8px;transition:border-color .12s,background .12s}
+.opt:hover{border-color:var(--accent);background:var(--accent-soft)}
+.opt .k{font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-weight:600}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.opt[aria-pressed="true"]::before{content:"✓";color:var(--accent-ink)}
+.opt .flag{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warn)}
+.objrow{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line)}
+.objrow .lbl{font-size:.76rem;text-transform:uppercase;letter-spacing:.09em;color:var(--warn);font-weight:700;margin-bottom:8px;display:block}
+.objrow .chips{display:flex;flex-wrap:wrap;gap:6px}
+.ochip{border:1px solid var(--warn);background:var(--warn-soft);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:.88rem;font-weight:600}
+.ochip.more{background:transparent;color:var(--warn)}
+.foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+.foot .sp{flex:1}
+.notebox{width:100%;margin-top:10px}
+.notebox textarea{width:100%;min-height:56px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);resize:vertical}
+
+/* Carte objection active */
+.active.objection{border-color:var(--warn)}
+.saying{background:var(--warn-soft);border-radius:8px;padding:10px 14px;font-weight:700;font-size:1.05rem;margin:8px 0 14px}
+.answer{font-size:1.02rem}
+.answer h3,.rebond h3{font-size:.74rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:0 0 4px}
+.rebond{margin-top:14px;background:var(--accent-soft);border-radius:8px;padding:10px 14px}
+.rebond p{margin:0;font-style:italic;color:var(--accent-ink);font-weight:600}
+.answer p{margin:0}
+.decide{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.decide .yes{border:0;background:var(--ok);color:var(--surface);padding:9px 16px;border-radius:6px;font-weight:700}
+.decide .no{border:1px solid var(--warn);background:transparent;color:var(--warn);padding:8px 15px;border-radius:6px;font-weight:700}
+.queue{font-size:.85rem;color:var(--muted);margin-top:10px}
+
+/* Recommandation */
+.reco h2{font-size:clamp(1.7rem,4vw,2.3rem);font-weight:700}
+.reco .acc{font-size:1.1rem;margin:0 0 12px}
+.why{background:var(--accent-soft);border-radius:8px;padding:10px 14px;font-size:.95rem;margin-bottom:16px}
+.reco h4{font-family:var(--f-display);font-weight:600;font-size:1.15rem;margin:20px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.reco ul,.reco ol{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.fb textarea{width:100%;min-height:160px;margin-top:10px;font-family:ui-monospace,Menlo,monospace;font-size:.8rem;border:1px solid var(--line);border-radius:6px;background:var(--bg);padding:10px}
+.toast{font-size:.88rem;color:var(--ok);font-weight:600}
+
+/* Colonne */
+aside{display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (min-width:901px){aside{position:sticky;top:calc(150px + env(safe-area-inset-top,0px));align-self:start;max-height:calc(100vh - 170px);overflow:auto}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.panel h3{font-family:var(--f-display);font-weight:600;font-size:1.05rem;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px}
+.panel h3 span{font-family:var(--f-body);font-size:.8rem;color:var(--muted);font-weight:600}
+.empty{color:var(--muted);font-size:.88rem;margin:0}
+.plist{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.9rem}
+.plist li{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.plist button{border:0;background:none;padding:0;text-align:left;color:inherit;font-weight:600}
+.plist button:hover{color:var(--accent-ink)}
+.alist{margin:0;padding-left:1.1em;display:grid;gap:5px;font-size:.88rem}
+.stat{display:flex;gap:16px;font-size:.88rem;color:var(--muted)}
+.stat b{display:block;font-family:var(--f-display);font-size:1.5rem;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+
+/* Tiroir objections */
+.scrim{position:fixed;inset:0;background:rgba(10,16,22,.45);z-index:20}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);background:var(--surface);z-index:21;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.2);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-right:env(safe-area-inset-right,0px)}
+.drawer .dh{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px 6px}
+.drawer .dh h3{font-family:var(--f-display);font-size:1.35rem;margin:0}
+.drawer .sub{padding:0 18px 10px;color:var(--muted);font-size:.88rem;margin:0}
+.drawer .tools{padding:0 18px 12px;border-bottom:1px solid var(--line)}
+.drawer input[type=search]{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.drawer .body{overflow:auto;padding:12px 18px 24px;display:grid;gap:8px;align-content:start}
+.bank{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg);text-align:left;display:grid;gap:3px}
+.bank:hover{border-color:var(--warn)}
+.bank .th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--warn)}
+.bank .o{font-weight:700}
+.bank .r{font-size:.88rem;color:var(--muted)}
+.loaderr{background:var(--warn-soft);border:1px solid var(--warn);border-radius:10px;padding:18px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><path d="M8 26V8a4 4 0 0 1 4-4h9" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/><rect x="17" y="3" width="9" height="4" rx="1.5" fill="var(--accent)"/><path d="M18.5 9l-2 6M21.5 9v6M24.5 9l2 6" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" opacity=".7"/><path d="M4 26h8" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/></svg>
+      <div><h1>Entretien Télégestion</h1><small>Questions, objections et réponses au fil du rendez-vous</small></div>
+    </div>
+    <div class="client"><label for="client">Client</label><input id="client" type="text" placeholder="Nom de la commune"></div>
+    <button class="btn-obj" id="openBank">Le client objecte…</button>
+    <button class="ghost" id="reset">Nouvel entretien</button>
+  </div>
+  <div class="wrap"><div class="parts" id="parts"></div></div>
+</header>
+
+<main><div class="wrap">
+  <div class="thread" id="thread" aria-live="polite"></div>
+  <aside id="aside"></aside>
+</div></main>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dtitle" hidden>
+  <div class="dh"><h3 id="dtitle">Le client objecte</h3><button class="ghost" id="closeBank">Fermer</button></div>
+  <p class="sub">Choisissez ce que dit le client : la réponse s'affiche dans l'entretien, puis vous reprenez là où vous en étiez.</p>
+  <div class="tools"><input id="bsearch" type="search" placeholder="Rechercher : budget, réseau, élus…" aria-label="Rechercher une objection"></div>
+  <div class="body" id="bbody"></div>
+</div>
+
+<script type="application/json" id="data"></script>
+<script>
+(function(){
+const KEY='entretien-telegestion-v1';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+let D,Q=[],QI={},O,S;
+
+function boot(data){
+  D=data;O=D.objections;
+  D.parties.forEach((p,pi)=>p.sections.forEach(s=>s.questions.forEach(q=>{q.part=p;q.pi=pi;q.sec=s;QI[q.id]=Q.length;Q.push(q)})));
+  try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!S||!Array.isArray(S.log))S=fresh();
+  S.log=S.log.filter(e=>e.q==null||QI[e.q]!=null);
+  wire();render();
+}
+function fresh(){return{client:'',log:[],notes:{}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* Faits tirés des réponses */
+function facts(){
+  const f={};
+  for(const e of S.log){
+    if(e.t==='a'){const q=Q[QI[e.q]];
+      e.sel.forEach(i=>{const st=q.options[i].set||{};for(const k in st){
+        if(q.multi){f[k]=[].concat(f[k]||[],st[k])}else f[k]=st[k]}})}
+    if(e.t==='o'&&e.st)f['obj_'+e.o]=e.st;
+  }
+  return f;
+}
+function ok(c,f){if(!c)return true;
+  return Object.entries(c).every(([k,vals])=>{const v=f[k];
+    if(vals.includes('?'))return v==null;
+    if(v==null)return false;
+    return [].concat(v).some(x=>vals.includes(x))})}
+function visible(q,f){return ok(q.part.si,f)&&ok(q.sec.si,f)&&ok(q.si,f)}
+function lastIdx(){for(let i=S.log.length-1;i>=0;i--){const e=S.log[i];if(e.t==='a'||e.t==='s')return QI[e.q]}return -1}
+function current(f){
+  const pend=S.log.find(e=>e.t==='o'&&!e.st);
+  if(pend)return{kind:'obj',e:pend};
+  for(let i=lastIdx()+1;i<Q.length;i++)if(visible(Q[i],f))return{kind:'q',q:Q[i]};
+  return{kind:'end'};
+}
+function reco(f){for(const r of D.regles){if(ok(r.si,f))return r}}
+
+/* Rendu */
+function render(){
+  const f=facts(),cur=current(f);
+  document.getElementById('client').value=S.client||'';
+  renderParts(f,cur);renderThread(f,cur);renderAside(f,cur);
+}
+function renderParts(f,cur){
+  const nowPi=cur.kind==='q'?cur.q.pi:cur.kind==='obj'&&cur.e.q?Q[QI[cur.e.q]].pi:D.parties.length;
+  document.getElementById('parts').innerHTML=D.parties.map((p,i)=>{
+    const skip=p.si&&!ok(p.si,f)&&i<nowPi;
+    const cls=i===nowPi?'now':skip?'skip':i<nowPi?'done':'';
+    return `<div class="pt ${cls}" title="${esc(p.titre)}"><i></i>${esc(p.titre)}</div>`}).join('');
+}
+function optLabel(q,sel){return sel.map(i=>q.options[i].label).join(', ')}
+function renderThread(f,cur){
+  let h='',lastPart=null;
+  S.log.forEach((e,i)=>{
+    const q=e.q!=null?Q[QI[e.q]]:null;
+    if(q&&q.part!==lastPart){lastPart=q.part;h+=`<div class="divider">${esc(q.part.titre)}</div>`}
+    if(e.t==='a'){
+      h+=`<div class="msg me"><span class="who">Vous</span>${esc(q.question)}</div>`;
+      h+=`<div class="msg cl"><span class="who">Client</span>${esc(optLabel(q,e.sel))}${S.notes[e.q]?`<span class="note">Note : ${esc(S.notes[e.q])}</span>`:''}</div>`;
+      e.sel.forEach(j=>{const a=q.options[j].argument;if(a)h+=`<div class="msg arg"><span class="who">Argument à placer</span>${esc(a)}</div>`});
+    }else if(e.t==='s'){
+      h+=`<div class="msg skip">Question passée : ${esc(q.question)}</div>`;
+    }else if(e.t==='o'&&e.st){
+      const o=O[e.o];
+      h+=`<div class="msg cl obj"><span class="who">Client — objection</span>« ${esc(o.objection)} »</div>`;
+      h+=`<div class="msg resp"><span class="who">Votre réponse <span class="status ${e.st==='leve'?'ok':'ko'}">${e.st==='leve'?'Levée':'Réticent'}</span></span>${esc(o.reponse)}<span class="rb">${esc(o.rebond)}</span></div>`;
+    }
+  });
+  if(cur.kind==='q'&&cur.q.part!==lastPart)h+=`<div class="divider">${esc(cur.q.part.titre)}</div>`;
+  h+=cur.kind==='q'?cardQ(cur.q,f):cur.kind==='obj'?cardO(cur.e):cardEnd(f);
+  const t=document.getElementById('thread');t.innerHTML=h;
+  const a=t.querySelector('.active');
+  if(a&&S.log.length)a.scrollIntoView({block:'end'});
+}
+let multiSel=[];
+function cardQ(q,f){
+  const n=Q.filter(x=>visible(x,f)).length;
+  const done=S.log.filter(e=>e.t==='a'||e.t==='s').length;
+  const objs=q.objections||[];
+  return `<section class="active" id="card">
+    <div class="eyebrow"><b>${esc(q.id)}</b><span>${esc(q.part.titre)}</span>${q.sec.titre?`<span>· ${esc(q.sec.titre)}</span>`:''}<span>· ${done+1} / ${n}</span></div>
+    <h2>${esc(q.question)}</h2>
+    ${q.conseil?`<div class="tip"><b>Conseil</b>${esc(q.conseil)}</div>`:''}
+    <div class="opts" role="group" aria-label="Réponses du client">${q.options.map((o,i)=>`<button class="opt" data-opt="${i}" ${q.multi?`aria-pressed="${multiSel.includes(i)}"`:''}>${i<9?`<span class="k">${i+1}</span>`:''}${esc(o.label)}${o.objections?'<span class="flag">objection</span>':''}</button>`).join('')}</div>
+    ${q.multi?`<div class="foot"><button class="primary" id="validate" ${multiSel.length?'':'disabled'}>Valider la réponse</button><span class="queue">Plusieurs réponses possibles.</span></div>`:''}
+    <div class="objrow"><span class="lbl">Le client objecte</span><div class="chips">${objs.map(id=>`<button class="ochip" data-raise="${id}">« ${esc(O[id].objection)} »</button>`).join('')}<button class="ochip more" id="moreObj">Autre objection…</button></div></div>
+    <div class="foot"><button class="ghost" id="back" ${S.log.length?'':'disabled'}>← Retour</button><button class="ghost" id="skipQ">Passer la question</button><span class="sp"></span><button class="ghost" id="noteT" aria-expanded="false">Ajouter une note</button></div>
+    <div class="notebox" id="noteBox" hidden><label class="empty" for="note">Note sur cette question (chiffre, nom, précision)</label><textarea id="note" data-q="${q.id}">${esc(S.notes[q.id]||'')}</textarea></div>
+  </section>`;
+}
+function cardO(e){
+  const o=O[e.o];const left=S.log.filter(x=>x.t==='o'&&!x.st).length-1;
+  const q=e.q!=null?Q[QI[e.q]]:null;
+  return `<section class="active objection" id="card">
+    <div class="eyebrow"><b>Objection</b><span>${esc(o.theme)}</span>${q?`<span>· pendant ${esc(q.id)}</span>`:''}</div>
+    <div class="saying">« ${esc(o.objection)} »</div>
+    <div class="answer"><h3>Ce que vous répondez</h3><p>${esc(o.reponse)}</p></div>
+    <div class="rebond"><h3>Question de rebond</h3><p>${esc(o.rebond)}</p></div>
+    <div class="decide"><button class="yes" id="leve">Objection levée, on continue</button><button class="no" id="reticent">Le client reste réticent</button><button class="ghost" id="cancelObj">Annuler</button></div>
+    ${left>0?`<p class="queue">Encore ${left} objection${left>1?'s':''} à traiter avant de reprendre.</p>`:''}
+  </section>`;
+}
+function cardEnd(f){
+  const r=reco(f),R=D.recommandations[r.reco];
+  const raised=S.log.filter(e=>e.t==='o'&&e.st);
+  return `<section class="active reco" id="card">
+    <div class="eyebrow"><b>Fin de l'entretien</b><span>Recommandation</span></div>
+    <h2>${esc(R.titre)}</h2><p class="acc">${esc(R.accroche)}</p>
+    <div class="why"><b>Pourquoi :</b> ${esc(r.raison)}</div>
+    <h4>Ce que l'on propose</h4><ul>${R.solution.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+    <h4>Prochaines étapes</h4><ol>${R.etapes.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>
+    ${raised.length?`<h4>Objections rencontrées</h4><ul>${raised.map(e=>`<li>« ${esc(O[e.o].objection)} » <span class="status ${e.st==='leve'?'ok':'ko'}">${e.st==='leve'?'Levée':'Réticent'}</span></li>`).join('')}</ul>`:''}
+    <div class="foot"><button class="primary" id="copySyn">Copier la synthèse du rendez-vous</button><button class="ghost" id="back">← Modifier la dernière réponse</button><span class="toast" id="toast" role="status"></span></div>
+    <div class="fb" id="fb"></div>
+  </section>`;
+}
+function renderAside(f,cur){
+  const raised=S.log.filter(e=>e.t==='o'&&e.st);
+  const lev=raised.filter(e=>e.st==='leve').length;
+  const args=[];S.log.forEach(e=>{if(e.t==='a'){const q=Q[QI[e.q]];e.sel.forEach(j=>{const a=q.options[j].argument;if(a&&!args.includes(a))args.push(a)})}});
+  const answered=S.log.filter(e=>e.t==='a').length;
+  const parts=D.parties.map((p,i)=>{const qs=Q.filter(q=>q.pi===i);const first=S.log.findIndex(e=>e.q&&Q[QI[e.q]].pi===i&&(e.t==='a'||e.t==='s'));
+    const n=S.log.filter(e=>e.t==='a'&&Q[QI[e.q]].pi===i).length;
+    return {p,i,n,first,show:ok(p.si,f)}});
+  document.getElementById('aside').innerHTML=`
+    <div class="panel"><div class="stat"><div><b>${answered}</b>réponses</div><div><b>${raised.length}</b>objections</div><div><b>${lev}</b>levées</div></div></div>
+    <div class="panel"><h3>Objections du client</h3>${raised.length?`<ul class="plist">${raised.map(e=>`<li><span>« ${esc(O[e.o].objection)} »</span><span class="status ${e.st==='leve'?'ok':'ko'}">${e.st==='leve'?'Levée':'Réticent'}</span></li>`).join('')}</ul>`:'<p class="empty">Aucune pour l\'instant. Quand le client objecte, cliquez sur son objection sous la question.</p>'}</div>
+    <div class="panel"><h3>Arguments à placer <span>${args.length}</span></h3>${args.length?`<ol class="alist">${args.map(a=>`<li>${esc(a)}</li>`).join('')}</ol>`:'<p class="empty">Ils apparaissent selon les réponses du client.</p>'}</div>
+    <div class="panel"><h3>Revenir à une partie</h3><ul class="plist">${parts.filter(x=>x.first>=0).map(x=>`<li><button data-jump="${x.first}">${esc(x.p.titre)}</button><span class="empty">${x.n}</span></li>`).join('')||'<li class="empty">Les parties commencées s\'affichent ici.</li>'}</ul></div>`;
+}
+
+/* Actions */
+function answer(q,sel){S.log.push({t:'a',q:q.id,sel});
+  sel.forEach(i=>(q.options[i].objections||[]).forEach(o=>S.log.push({t:'o',o,q:q.id,st:null})));
+  multiSel=[];save();render()}
+function raise(id,qid){S.log.push({t:'o',o:id,q:qid,st:null});save();render()}
+function wire(){
+  document.addEventListener('click',ev=>{
+    const b=ev.target.closest('button');if(!b)return;
+    const f=facts(),cur=current(f);
+    if(b.dataset.opt!=null&&cur.kind==='q'){const i=+b.dataset.opt;
+      if(cur.q.multi){multiSel=multiSel.includes(i)?multiSel.filter(x=>x!==i):[...multiSel,i];b.setAttribute('aria-pressed',multiSel.includes(i));document.getElementById('validate').disabled=!multiSel.length;return}
+      answer(cur.q,[i]);return}
+    if(b.id==='validate'&&cur.kind==='q'&&multiSel.length){answer(cur.q,multiSel.slice().sort((a,c)=>a-c));return}
+    if(b.dataset.raise){raise(b.dataset.raise,cur.kind==='q'?cur.q.id:null);return}
+    if(b.id==='moreObj'||b.id==='openBank'){openBank();return}
+    if(b.dataset.bank){closeBank();raise(b.dataset.bank,cur.kind==='q'?cur.q.id:(cur.kind==='obj'?cur.e.q:null));return}
+    if(b.id==='closeBank'){closeBank();return}
+    if(b.id==='leve'||b.id==='reticent'){cur.e.st=b.id==='leve'?'leve':'reticent';save();render();return}
+    if(b.id==='cancelObj'){S.log.splice(S.log.indexOf(cur.e),1);save();render();return}
+    if(b.id==='skipQ'&&cur.kind==='q'){S.log.push({t:'s',q:cur.q.id});multiSel=[];save();render();return}
+    if(b.id==='back'){
+      while(S.log.length){const e=S.log.pop();if(e.t==='a'||e.t==='s'||(e.t==='o'&&e.st)){
+        if(e.t==='a'){while(S.log.length&&S.log[S.log.length-1].t==='o'&&!S.log[S.log.length-1].st)S.log.pop()}
+        break}}
+      multiSel=[];save();render();return}
+    if(b.dataset.jump!=null){S.log=S.log.slice(0,+b.dataset.jump);multiSel=[];save();render();window.scrollTo({top:0});return}
+    if(b.id==='noteT'){const nb=document.getElementById('noteBox');nb.hidden=!nb.hidden;b.setAttribute('aria-expanded',!nb.hidden);if(!nb.hidden)document.getElementById('note').focus();return}
+    if(b.id==='reset'){if(b.dataset.confirm){S=fresh();multiSel=[];save();render();window.scrollTo({top:0});b.textContent='Nouvel entretien';delete b.dataset.confirm;b.className='ghost';return}
+      b.dataset.confirm='1';b.textContent='Confirmer : tout effacer';b.className='primary';setTimeout(()=>{if(b.dataset.confirm){delete b.dataset.confirm;b.textContent='Nouvel entretien';b.className='ghost'}},4000);return}
+    if(b.id==='copySyn'){copy(synthese(f))}
+  });
+  document.addEventListener('input',ev=>{
+    if(ev.target.id==='note'){S.notes[ev.target.dataset.q]=ev.target.value;save()}
+    if(ev.target.id==='client'){S.client=ev.target.value;save()}
+    if(ev.target.id==='bsearch')drawBank();
+  });
+  document.addEventListener('keydown',ev=>{
+    if(ev.key==='Escape'&&!document.getElementById('drawer').hidden){closeBank();return}
+    if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)||!document.getElementById('drawer').hidden)return;
+    const k=+ev.key;if(k>=1&&k<=9){const btn=document.querySelector(`[data-opt="${k-1}"]`);if(btn){ev.preventDefault();btn.click()}}
+    if(ev.key==='Enter'){const v=document.getElementById('validate');if(v&&!v.disabled){ev.preventDefault();v.click()}}
+  });
+  document.getElementById('scrim').addEventListener('click',closeBank);
+}
+function drawBank(){
+  const t=norm(document.getElementById('bsearch').value.trim());
+  const ids=Object.keys(O).filter(id=>{const o=O[id];return !t||norm(o.objection+' '+o.reponse+' '+o.theme).includes(t)});
+  document.getElementById('bbody').innerHTML=ids.length?ids.map(id=>`<button class="bank" data-bank="${id}"><span class="th">${esc(O[id].theme)}</span><span class="o">« ${esc(O[id].objection)} »</span><span class="r">${esc(O[id].reponse.slice(0,110))}…</span></button>`).join(''):'<p class="empty">Aucune objection ne correspond.</p>';
+}
+function openBank(){document.getElementById('bsearch').value='';drawBank();document.getElementById('drawer').hidden=false;document.getElementById('scrim').hidden=false;document.getElementById('bsearch').focus()}
+function closeBank(){document.getElementById('drawer').hidden=true;document.getElementById('scrim').hidden=true}
+
+function synthese(f){
+  const r=reco(f),R=D.recommandations[r.reco];
+  const L=[`SYNTHÈSE ENTRETIEN TÉLÉGESTION — ${S.client||'Commune'} — ${new Date().toLocaleDateString('fr-FR')}`,''];
+  let part=null;
+  S.log.forEach(e=>{const q=e.q!=null?Q[QI[e.q]]:null;
+    if(q&&q.part!==part){part=q.part;L.push('',part.titre.toUpperCase())}
+    if(e.t==='a')L.push(`- ${q.question} → ${optLabel(q,e.sel)}${S.notes[e.q]?` (note : ${S.notes[e.q]})`:''}`);
+    if(e.t==='o'&&e.st)L.push(`  ! Objection : « ${O[e.o].objection} » → ${e.st==='leve'?'levée':'client réticent'}`)});
+  L.push('','RECOMMANDATION : '+R.titre,'Pourquoi : '+r.raison,'','PROCHAINES ÉTAPES');R.etapes.forEach((x,i)=>L.push(`${i+1}. ${x}`));
+  const ko=S.log.filter(e=>e.t==='o'&&e.st==='reticent');if(ko.length){L.push('','POINTS DE VIGILANCE (client réticent)');ko.forEach(e=>L.push('- '+O[e.o].objection))}
+  return L.join('\n');
+}
+function copy(text){
+  const t=document.getElementById('toast'),fb=document.getElementById('fb');
+  const fall=()=>{fb.innerHTML=`<textarea readonly id="fbt">${esc(text)}</textarea>`;const x=document.getElementById('fbt');x.focus();x.select();t.textContent='Texte sélectionné : copiez-le avec Ctrl+C'};
+  try{navigator.clipboard.writeText(text).then(()=>{t.textContent='Synthèse copiée';fb.innerHTML=''},fall)}catch(e){fall()}
+}
+
+/* Chargement des données : intégrées à la page, sinon fichier entretien-telegestion.json à côté */
+const inline=document.getElementById('data').textContent.trim();
+const fail=msg=>{document.getElementById('thread').innerHTML=`<div class="loaderr"><h2 style="margin-top:0;font-family:var(--f-display)">L'entretien ne peut pas se charger</h2><p>${esc(msg)}</p><p>Vérifiez la dernière modification du fichier entretien-telegestion.json (virgule ou guillemet oublié), ou revenez à la version précédente dans l'historique.</p></div>`};
+if(inline&&inline[0]==='{'){try{boot(JSON.parse(inline))}catch(e){fail(e.message)}}
+else fetch('entretien-telegestion.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Fichier entretien-telegestion.json introuvable.');return r.text()}).then(t=>{let d;try{d=JSON.parse(t)}catch(e){throw new Error('Erreur de syntaxe : '+e.message)}boot(d)}).catch(e=>fail(e.message));
+})();
+</script>
+
+</body>
+</html>

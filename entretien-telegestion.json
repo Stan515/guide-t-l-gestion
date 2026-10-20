@@ -1,0 +1,3691 @@
+{
+ "meta": {
+  "titre": "Entretien découverte télégestion",
+  "version": "1.0",
+  "date": "2026-10-20",
+  "aide": "parties > sections > questions > options. 'si' = condition d'affichage selon les réponses déjà données (faits). 'set' = faits enregistrés par une réponse. 'objections' sur une question = objections que le client peut soulever à ce moment ; sur une réponse = objection déclenchée par cette réponse. 'argument' = argument à placer quand le client donne cette réponse. 'maint=?' = fait pas encore connu."
+ },
+ "parties": [
+  {
+   "id": "P1",
+   "titre": "Contexte et interlocuteur",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q1",
+       "question": "Qui avez-vous en face de vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Maire",
+         "set": {
+          "profil": "elu"
+         }
+        },
+        {
+         "label": "Adjoint (travaux, environnement, finances)",
+         "set": {
+          "profil": "elu"
+         }
+        },
+        {
+         "label": "DGS",
+         "set": {
+          "profil": "elu"
+         }
+        },
+        {
+         "label": "DST / responsable des services techniques",
+         "set": {
+          "profil": "tech"
+         }
+        },
+        {
+         "label": "Responsable éclairage public",
+         "set": {
+          "profil": "tech"
+         }
+        },
+        {
+         "label": "Syndicat d'énergie",
+         "set": {
+          "profil": "tech"
+         }
+        },
+        {
+         "label": "Installateur / exploitant",
+         "set": {
+          "profil": "tech"
+         }
+        }
+       ],
+       "conseil": "Élu : parlez économies, sobriété et réactivité face aux habitants, sans jargon. Technicien : parlez tournées, pannes et réglages, vous pouvez être technique."
+      },
+      {
+       "id": "Q2",
+       "question": "Quelle est la taille de la collectivité ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 2 000 habitants"
+        },
+        {
+         "label": "2 000 à 10 000 habitants"
+        },
+        {
+         "label": "10 000 à 50 000 habitants"
+        },
+        {
+         "label": "Plus de 50 000 habitants"
+        },
+        {
+         "label": "Intercommunalité / métropole"
+        }
+       ]
+      },
+      {
+       "id": "Q3",
+       "question": "D'où vient ce rendez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Demande du client",
+         "argument": "Le client a un besoin : faites-le préciser dès maintenant."
+        },
+        {
+         "label": "Projet de rénovation",
+         "set": {
+          "renov": "oui"
+         },
+         "argument": "Fenêtre idéale : la télégestion s'intègre au projet de rénovation."
+        },
+        {
+         "label": "Prospection"
+        },
+        {
+         "label": "Recommandation (syndicat, installateur, autre commune)"
+        },
+        {
+         "label": "Appel d'offres en préparation",
+         "argument": "Proposez d'aider à rédiger les prescriptions télégestion."
+        }
+       ],
+       "objections": [
+        "pas_temps"
+       ]
+      },
+      {
+       "id": "Q4",
+       "question": "Le client connaît-il déjà Schréder ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, il a déjà nos luminaires"
+        },
+        {
+         "label": "Oui, de nom"
+        },
+        {
+         "label": "Non"
+        }
+       ],
+       "objections": [
+        "concurrent"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P2",
+   "titre": "Le parc d'éclairage public",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q5",
+       "question": "Combien de points lumineux compte la commune ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 500"
+        },
+        {
+         "label": "500 à 1 000"
+        },
+        {
+         "label": "1 000 à 3 000"
+        },
+        {
+         "label": "3 000 à 10 000"
+        },
+        {
+         "label": "Plus de 10 000"
+        },
+        {
+         "label": "Ne sait pas",
+         "argument": "Pas de visibilité sur le parc : la plateforme tient un inventaire à jour et géolocalisé."
+        }
+       ],
+       "conseil": "Au-delà de quelques centaines de points, le suivi à la main devient difficile : c'est un premier argument."
+      },
+      {
+       "id": "Q6",
+       "question": "Quelles technologies sont installées ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "LED"
+        },
+        {
+         "label": "Sodium haute pression"
+        },
+        {
+         "label": "Iodures métalliques"
+        },
+        {
+         "label": "Ballons fluorescents (mercure)",
+         "argument": "Ces lampes ne sont plus commercialisées : leur remplacement est l'occasion d'intégrer la télégestion."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q7",
+       "question": "Quelle part du parc est déjà rénovée en LED ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 30 %",
+         "set": {
+          "led": "faible"
+         }
+        },
+        {
+         "label": "30 à 70 %",
+         "set": {
+          "led": "moyen"
+         }
+        },
+        {
+         "label": "Plus de 70 %",
+         "set": {
+          "led": "fort"
+         },
+         "argument": "Parc prêt pour la télégestion au point lumineux."
+        },
+        {
+         "label": "100 %",
+         "set": {
+          "led": "fort"
+         },
+         "argument": "Parc prêt pour la télégestion au point lumineux."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "conseil": "Question clé : la télégestion au point lumineux demande des luminaires LED pilotables. Un parc peu rénové oriente d'abord vers l'armoire.",
+       "objections": [
+        "led_suffit"
+       ]
+      },
+      {
+       "id": "Q8",
+       "question": "Quel est l'âge moyen des luminaires ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 5 ans"
+        },
+        {
+         "label": "5 à 15 ans"
+        },
+        {
+         "label": "15 à 30 ans",
+         "argument": "Parc vieillissant : la rénovation approche, préparez la télégestion avec."
+        },
+        {
+         "label": "Plus de 30 ans",
+         "argument": "Parc vieillissant : la rénovation approche, préparez la télégestion avec."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q9",
+       "question": "Quels types de supports ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Mâts / candélabres"
+        },
+        {
+         "label": "Consoles sur poteaux du réseau aérien"
+        },
+        {
+         "label": "Façades"
+        },
+        {
+         "label": "Projecteurs"
+        },
+        {
+         "label": "Bornes ou encastrés de sol"
+        }
+       ]
+      },
+      {
+       "id": "Q10",
+       "question": "Disposez-vous d'un inventaire ou d'une cartographie du parc ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, SIG à jour"
+        },
+        {
+         "label": "Oui, mais partiel ou ancien",
+         "argument": "La plateforme met l'inventaire à jour automatiquement."
+        },
+        {
+         "label": "Tableur ou papier",
+         "argument": "La plateforme met l'inventaire à jour automatiquement."
+        },
+        {
+         "label": "Tenu par l'installateur ou le syndicat",
+         "argument": "La commune n'a pas la main sur la connaissance de son patrimoine."
+        },
+        {
+         "label": "Non",
+         "argument": "Opportunité forte : la télégestion devient l'outil de connaissance du patrimoine."
+        }
+       ]
+      },
+      {
+       "id": "Q11",
+       "question": "Quelles zones sont éclairées ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Voies principales"
+        },
+        {
+         "label": "Centre-bourg"
+        },
+        {
+         "label": "Résidentiel / lotissements",
+         "argument": "Zones idéales pour l'abaissement en cœur de nuit."
+        },
+        {
+         "label": "Parcs et jardins",
+         "argument": "Zones idéales pour la détection de présence."
+        },
+        {
+         "label": "Zones d'activité",
+         "argument": "Zones idéales pour l'abaissement en cœur de nuit."
+        },
+        {
+         "label": "Équipements sportifs"
+        },
+        {
+         "label": "Parkings"
+        },
+        {
+         "label": "Patrimoine"
+        }
+       ]
+      },
+      {
+       "id": "Q12",
+       "question": "Les luminaires récents ont-ils une prise pour un module de contrôle ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, NEMA",
+         "set": {
+          "prise": "oui"
+         },
+         "argument": "Équipement au point lumineux rapide."
+        },
+        {
+         "label": "Oui, Zhaga",
+         "set": {
+          "prise": "oui"
+         },
+         "argument": "Équipement au point lumineux rapide."
+        },
+        {
+         "label": "Les deux",
+         "set": {
+          "prise": "oui"
+         },
+         "argument": "Équipement au point lumineux rapide."
+        },
+        {
+         "label": "Non"
+        },
+        {
+         "label": "Ne sait pas",
+         "argument": "Action : noter les références des luminaires pour vérifier."
+        }
+       ],
+       "conseil": "Avec une prise NEMA ou Zhaga, le module se pose en quelques minutes, sans câblage.",
+       "objections": [
+        "install"
+       ]
+      },
+      {
+       "id": "Q13",
+       "question": "Quelles marques de luminaires sont installées ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Schréder"
+        },
+        {
+         "label": "Un autre fabricant"
+        },
+        {
+         "label": "Plusieurs marques",
+         "argument": "Argument interopérabilité : une seule plateforme pour toutes les marques compatibles."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "concurrent",
+        "dependance"
+       ]
+      },
+      {
+       "id": "Q14",
+       "question": "Avez-vous de l'éclairage solaire ou autonome ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "En projet"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q15",
+       "question": "Des mises en lumière ou des illuminations festives sont-elles branchées sur le réseau ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, sur le réseau d'éclairage",
+         "argument": "La télégestion pilote aussi ces circuits : horaires des illuminations à distance."
+        },
+        {
+         "label": "Oui, sur un réseau séparé"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P3",
+   "titre": "Armoires EP",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q16",
+       "question": "Combien d'armoires d'éclairage public avez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 10"
+        },
+        {
+         "label": "10 à 50"
+        },
+        {
+         "label": "50 à 150"
+        },
+        {
+         "label": "Plus de 150"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "conseil": "Chaque armoire est une porte d'entrée simple pour une première télégestion (horloge connectée)."
+      },
+      {
+       "id": "Q17",
+       "question": "Combien sont équipées d'un système de pilotage ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Aucune"
+        },
+        {
+         "label": "Quelques-unes"
+        },
+        {
+         "label": "Environ la moitié"
+        },
+        {
+         "label": "La majorité"
+        },
+        {
+         "label": "Toutes"
+        }
+       ]
+      },
+      {
+       "id": "Q18",
+       "question": "Les armoires sont-elles homogènes ou de générations différentes ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Homogènes"
+        },
+        {
+         "label": "Deux ou trois générations"
+        },
+        {
+         "label": "Très hétérogènes",
+         "argument": "Une plateforme unique harmonise le pilotage, quelle que soit la génération d'armoire."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q19",
+       "question": "Dans quel état sont-elles ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Bon état"
+        },
+        {
+         "label": "État moyen"
+        },
+        {
+         "label": "Vétustes",
+         "argument": "La mise à niveau des armoires est l'occasion d'y installer une horloge connectée."
+        },
+        {
+         "label": "Mise en conformité nécessaire",
+         "argument": "La mise à niveau des armoires est l'occasion d'y installer une horloge connectée."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q20",
+       "question": "Comment sont-elles commandées ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Horloge mécanique",
+         "argument": "Chaque changement d'heure ou d'horaire impose un passage en armoire."
+        },
+        {
+         "label": "Horloge astronomique"
+        },
+        {
+         "label": "Cellule photoélectrique"
+        },
+        {
+         "label": "Commande centralisée (radio, fil pilote)"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "horloge"
+       ]
+      },
+      {
+       "id": "Q21",
+       "question": "Combien de départs par armoire en moyenne ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "1"
+        },
+        {
+         "label": "2 à 4"
+        },
+        {
+         "label": "Plus de 4"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q22",
+       "question": "Chaque armoire a-t-elle son propre compteur ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non, comptage regroupé ou forfait",
+         "argument": "Sans comptage, la consommation réelle est inconnue : la télégestion la mesure."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q23",
+       "question": "Le réseau d'éclairage est-il dédié ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, réseau dédié"
+        },
+        {
+         "label": "Non, partagé avec le réseau de distribution (aérien)"
+        },
+        {
+         "label": "Mixte"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P4",
+   "titre": "Fonctionnement et horaires",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q24",
+       "question": "Quels horaires d'éclairage appliquez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Allumé toute la nuit",
+         "argument": "Gisement d'économies important avec l'abaissement en cœur de nuit."
+        },
+        {
+         "label": "Extinction le soir et rallumage le matin"
+        },
+        {
+         "label": "Horaires différents selon les zones"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q25",
+       "question": "Pratiquez-vous l'extinction en cœur de nuit ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, partout"
+        },
+        {
+         "label": "Oui, sur certaines zones"
+        },
+        {
+         "label": "Non"
+        },
+        {
+         "label": "En débat",
+         "argument": "Proposez de tester plusieurs scénarios sur une zone avant de trancher."
+        },
+        {
+         "label": "Testée puis abandonnée",
+         "argument": "L'abaissement par rue est une alternative à l'extinction totale."
+        }
+       ],
+       "objections": [
+        "extinction"
+       ]
+      },
+      {
+       "id": "Q26",
+       "question": "Pratiquez-vous l'abaissement de puissance ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, programmé une fois pour toutes dans les luminaires",
+         "argument": "Profil figé : la télégestion permet de le modifier à distance, rue par rue."
+        },
+        {
+         "label": "Oui, modifiable à distance"
+        },
+        {
+         "label": "Non"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "led_suffit"
+       ]
+      },
+      {
+       "id": "Q27",
+       "question": "Comment gérez-vous les exceptions (fêtes, marchés, 14 juillet) ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Déplacement dans chaque armoire",
+         "argument": "Avec la télégestion, une exception se programme en quelques clics."
+        },
+        {
+         "label": "Demande à l'installateur"
+        },
+        {
+         "label": "À distance"
+        },
+        {
+         "label": "Pas géré"
+        }
+       ]
+      },
+      {
+       "id": "Q28",
+       "question": "Recevez-vous des plaintes d'habitants sur l'éclairage ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Souvent",
+         "set": {
+          "plaintes": "oui"
+         }
+        },
+        {
+         "label": "De temps en temps",
+         "set": {
+          "plaintes": "oui"
+         }
+        },
+        {
+         "label": "Rarement"
+        }
+       ]
+      },
+      {
+       "id": "Q28b",
+       "question": "Sur quoi portent ces plaintes ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Pannes",
+         "argument": "La télégestion prévient la commune avant que l'habitant appelle."
+        },
+        {
+         "label": "Rues trop sombres"
+        },
+        {
+         "label": "Extinction de nuit",
+         "argument": "Le rallumage ou l'abaissement par zone apaise ces plaintes sans tout rallumer."
+        },
+        {
+         "label": "Éclairage trop fort ou gênant",
+         "argument": "Le niveau d'éclairage s'ajuste rue par rue à distance."
+        }
+       ],
+       "si": {
+        "plaintes": [
+         "oui"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P5",
+   "titre": "Priorités de la commune",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q29",
+       "question": "Quelle est votre priorité n°1 pour l'éclairage public ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Réduire la facture d'énergie"
+        },
+        {
+         "label": "Sobriété et biodiversité"
+        },
+        {
+         "label": "Sécurité et tranquillité publique"
+        },
+        {
+         "label": "Qualité de service et maintenance"
+        },
+        {
+         "label": "Image de la commune / smart city"
+        },
+        {
+         "label": "Conformité réglementaire"
+        }
+       ],
+       "conseil": "On vend la priorité du client, pas la technologie : notez-la, elle donne l'angle de toute la suite."
+      },
+      {
+       "id": "Q30",
+       "question": "Avez-vous un plan de sobriété ou des engagements climat (PCAET) ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, adopté",
+         "argument": "La télégestion mesure les économies : elle fournit les chiffres du bilan."
+        },
+        {
+         "label": "En préparation"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q31",
+       "question": "Avez-vous des enjeux de biodiversité ou de trame noire ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, enjeu fort (parc naturel, zones protégées)",
+         "argument": "Pilotage fin de l'intensité et des horaires dans les zones sensibles."
+        },
+        {
+         "label": "Oui, enjeu modéré"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q32",
+       "question": "Où en êtes-vous avec l'arrêté du 27 décembre 2018 sur les nuisances lumineuses ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Appliqué"
+        },
+        {
+         "label": "Appliqué en partie",
+         "argument": "La télégestion aide à appliquer les horaires et à le prouver."
+        },
+        {
+         "label": "Pas encore étudié"
+        },
+        {
+         "label": "Ne connaît pas"
+        }
+       ]
+      },
+      {
+       "id": "Q33",
+       "question": "Une rénovation de l'éclairage est-elle prévue dans les 3 prochaines années ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, budgétée",
+         "set": {
+          "renov": "oui"
+         },
+         "argument": "Intégrer la télégestion dès maintenant dans le projet."
+        },
+        {
+         "label": "Oui, en réflexion",
+         "set": {
+          "renov": "oui"
+         }
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q34",
+       "question": "Quels projets d'aménagement sont prévus ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Réfection de voirie"
+        },
+        {
+         "label": "Nouveaux quartiers",
+         "argument": "Prévoir des luminaires équipés de prises NEMA ou Zhaga dans les nouveaux quartiers."
+        },
+        {
+         "label": "Requalification du centre"
+        },
+        {
+         "label": "Aucun connu"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P6",
+   "titre": "Maintenance, coûts, astreintes",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q35",
+       "question": "Qui s'occupe de la maintenance de l'éclairage public ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "La régie (agents communaux)",
+         "set": {
+          "maint": "regie"
+         }
+        },
+        {
+         "label": "Un installateur (marché de maintenance)",
+         "set": {
+          "maint": "installateur"
+         }
+        },
+        {
+         "label": "Le syndicat d'énergie (compétence transférée)",
+         "set": {
+          "maint": "syndicat"
+         }
+        },
+        {
+         "label": "Mixte",
+         "set": {
+          "maint": "mixte"
+         }
+        }
+       ],
+       "objections": [
+        "installateur",
+        "syndicat"
+       ]
+      },
+      {
+       "id": "Q36",
+       "question": "Qui fait les réglages (horaires, abaissement) ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "La régie"
+        },
+        {
+         "label": "L'installateur"
+        },
+        {
+         "label": "Le syndicat"
+        },
+        {
+         "label": "Personne de défini",
+         "argument": "Personne n'est responsable des réglages : la plateforme centralise et trace chaque modification."
+        }
+       ]
+      },
+      {
+       "id": "Q37",
+       "question": "Qui facture les interventions ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "L'installateur"
+        },
+        {
+         "label": "Le syndicat"
+        },
+        {
+         "label": "Personne (fait en interne)"
+        }
+       ]
+      },
+      {
+       "id": "Q38",
+       "question": "Connaissez-vous le montant annuel de la facture d'énergie de l'éclairage ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Un ordre de grandeur"
+        },
+        {
+         "label": "Non",
+         "argument": "Proposez un diagnostic chiffré à partir des factures."
+        }
+       ]
+      },
+      {
+       "id": "Q39",
+       "question": "Quelle part représente-t-il dans la facture d'électricité de la commune ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 25 %"
+        },
+        {
+         "label": "25 à 50 %"
+        },
+        {
+         "label": "Plus de 50 %",
+         "argument": "Poste majeur du budget énergie : chaque point d'économie compte."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q40",
+       "question": "Quel est le coût annuel de la maintenance ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Connu"
+        },
+        {
+         "label": "Approximatif"
+        },
+        {
+         "label": "Inclus dans un forfait"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "roi"
+       ]
+      },
+      {
+       "id": "Q41",
+       "question": "Combien d'interventions par an ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 50"
+        },
+        {
+         "label": "50 à 200"
+        },
+        {
+         "label": "Plus de 200",
+         "argument": "Beaucoup d'interventions : la détection automatique évite les déplacements de diagnostic."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q42",
+       "question": "Combien coûte un déplacement (équipe et nacelle) ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Connu",
+         "argument": "Notez le montant : il servira au calcul de retour sur investissement."
+        },
+        {
+         "label": "Inclus au forfait"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q43",
+       "question": "Faites-vous des tournées de nuit pour repérer les pannes ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Chaque semaine",
+         "argument": "Coût des tournées à chiffrer : la télégestion les supprime en grande partie."
+        },
+        {
+         "label": "Chaque mois",
+         "argument": "Coût des tournées à chiffrer : la télégestion les supprime en grande partie."
+        },
+        {
+         "label": "Quelques fois par an"
+        },
+        {
+         "label": "Jamais"
+        }
+       ]
+      },
+      {
+       "id": "Q44",
+       "question": "Avez-vous une astreinte éclairage ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, en interne",
+         "argument": "Les alertes à distance permettent de trier les urgences avant de déplacer l'astreinte."
+        },
+        {
+         "label": "Oui, chez l'installateur"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P7",
+   "titre": "Budget, décideurs, calendrier",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q45",
+       "question": "Comment se présente le budget d'investissement éclairage ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Disponible"
+        },
+        {
+         "label": "Contraint",
+         "set": {
+          "budget": "contraint"
+         }
+        },
+        {
+         "label": "Gelé cette année",
+         "set": {
+          "budget": "contraint"
+         }
+        },
+        {
+         "label": "Dépend des subventions"
+        }
+       ],
+       "objections": [
+        "invest"
+       ]
+      },
+      {
+       "id": "Q46",
+       "question": "Quelles aides mobilisez-vous ou pourriez-vous mobiliser ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Syndicat d'énergie"
+        },
+        {
+         "label": "CEE"
+        },
+        {
+         "label": "DETR / DSIL"
+        },
+        {
+         "label": "Fonds vert"
+        },
+        {
+         "label": "Aucune",
+         "argument": "Proposez de regarder ensemble les financements possibles."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q47",
+       "question": "Quand se tient le prochain arbitrage budgétaire ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Dans moins de 3 mois",
+         "argument": "Préparez une note chiffrée avant cette date."
+        },
+        {
+         "label": "Dans 3 à 6 mois"
+        },
+        {
+         "label": "Au budget de l'an prochain"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "pas_maintenant"
+       ]
+      },
+      {
+       "id": "Q48",
+       "question": "Qui prend la décision ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Le maire"
+        },
+        {
+         "label": "Un adjoint"
+        },
+        {
+         "label": "Le conseil municipal"
+        },
+        {
+         "label": "Le DST ou le DGS"
+        },
+        {
+         "label": "Le syndicat d'énergie"
+        }
+       ],
+       "objections": [
+        "elus",
+        "syndicat"
+       ]
+      },
+      {
+       "id": "Q49",
+       "question": "Quel élu porte le sujet de l'éclairage ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Un élu identifié"
+        },
+        {
+         "label": "Personne en particulier",
+         "argument": "Identifiez un élu porteur : sans lui, le projet risque de ne pas avancer."
+        }
+       ]
+      },
+      {
+       "id": "Q50",
+       "question": "Comment achetez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Marché public / appel d'offres",
+         "argument": "Proposez d'aider à rédiger les prescriptions télégestion."
+        },
+        {
+         "label": "Centrale d'achat"
+        },
+        {
+         "label": "Via le syndicat"
+        },
+        {
+         "label": "Via le marché de l'installateur"
+        },
+        {
+         "label": "Achat direct (petit montant)"
+        }
+       ]
+      },
+      {
+       "id": "Q51",
+       "question": "Quel est votre calendrier de décision ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 6 mois"
+        },
+        {
+         "label": "6 à 12 mois"
+        },
+        {
+         "label": "Plus de 12 mois"
+        },
+        {
+         "label": "Pas de calendrier"
+        }
+       ],
+       "objections": [
+        "pas_maintenant"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P8",
+   "titre": "Intérêt pour la télégestion",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q52",
+       "question": "Est-ce que la télégestion de l'éclairage public est un sujet que vous avez déjà étudié ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, une étude a été faite"
+        },
+        {
+         "label": "Oui, évoqué sans suite",
+         "argument": "Demandez pourquoi le sujet n'a pas abouti."
+        },
+        {
+         "label": "Non"
+        }
+       ],
+       "objections": [
+        "mauvaise_exp"
+       ]
+      },
+      {
+       "id": "Q53",
+       "question": "Êtes-vous actuellement intéressés par la télégestion de votre parc d'éclairage public ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, un projet est en cours"
+        },
+        {
+         "label": "Oui, par curiosité"
+        },
+        {
+         "label": "Pas pour l'instant"
+        },
+        {
+         "label": "Non"
+        }
+       ],
+       "objections": [
+        "ca_marche",
+        "pas_maintenant"
+       ]
+      },
+      {
+       "id": "Q54",
+       "question": "Qu'est-ce qui vous a amenés à vous intéresser à ce sujet ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Hausse du prix de l'énergie"
+        },
+        {
+         "label": "Sobriété"
+        },
+        {
+         "label": "Pannes trop longues à détecter"
+        },
+        {
+         "label": "Plaintes d'habitants"
+        },
+        {
+         "label": "Rénovation à venir",
+         "set": {
+          "renov": "oui"
+         }
+        },
+        {
+         "label": "Exemple d'une autre commune"
+        },
+        {
+         "label": "Proposition de l'installateur ou du syndicat"
+        },
+        {
+         "label": "Rien de particulier"
+        }
+       ]
+      },
+      {
+       "id": "Q55",
+       "question": "Qu'est-ce qui pourrait vous freiner ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Coût d'investissement",
+         "objections": [
+          "invest"
+         ]
+        },
+        {
+         "label": "Abonnement",
+         "objections": [
+          "abonnement"
+         ]
+        },
+        {
+         "label": "Complexité / compétences",
+         "objections": [
+          "competences"
+         ]
+        },
+        {
+         "label": "Cybersécurité",
+         "objections": [
+          "cyber"
+         ]
+        },
+        {
+         "label": "Dépendance à un fournisseur",
+         "objections": [
+          "dependance"
+         ]
+        },
+        {
+         "label": "Couverture réseau",
+         "objections": [
+          "reseau"
+         ]
+        },
+        {
+         "label": "Mauvaise expérience",
+         "set": {
+          "frein": "mauvaise_exp"
+         },
+         "objections": [
+          "mauvaise_exp"
+         ]
+        },
+        {
+         "label": "Autres priorités",
+         "objections": [
+          "pas_maintenant"
+         ]
+        }
+       ],
+       "conseil": "Chaque frein coché fait apparaître l'objection correspondante : traitez-la tout de suite."
+      },
+      {
+       "id": "Q56",
+       "question": "Qu'attendriez-vous d'une telle solution ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Économies d'énergie"
+        },
+        {
+         "label": "Détection automatique des pannes"
+        },
+        {
+         "label": "Modifier les horaires à distance"
+        },
+        {
+         "label": "Abaissement par rue"
+        },
+        {
+         "label": "Suivi des consommations"
+        },
+        {
+         "label": "Inventaire à jour"
+        },
+        {
+         "label": "Tableaux de bord pour les élus"
+        }
+       ]
+      },
+      {
+       "id": "Q57",
+       "question": "Qui l'utiliserait au quotidien ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Les agents de la régie"
+        },
+        {
+         "label": "Le responsable éclairage / DST"
+        },
+        {
+         "label": "L'installateur"
+        },
+        {
+         "label": "Le syndicat"
+        },
+        {
+         "label": "Les élus (consultation)"
+        }
+       ],
+       "objections": [
+        "competences",
+        "donnees"
+       ]
+      },
+      {
+       "id": "Q58",
+       "question": "Avez-vous vu la télégestion fonctionner dans une autre commune ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, convaincant",
+         "argument": "Demandez ce qui l'a marqué : ce sera votre argument."
+        },
+        {
+         "label": "Oui, avis mitigé",
+         "argument": "Demandez ce qui n'a pas plu et montrez en quoi votre solution diffère."
+        },
+        {
+         "label": "Non",
+         "argument": "Proposez une démonstration ou la visite d'une commune équipée."
+        }
+       ]
+      },
+      {
+       "id": "Q59",
+       "question": "Quel calendrier envisagez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Cette année"
+        },
+        {
+         "label": "L'an prochain"
+        },
+        {
+         "label": "Pas défini"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P9",
+   "titre": "Question pivot",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q60",
+       "question": "La commune dispose-t-elle déjà d'une télégestion ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui",
+         "set": {
+          "tg": "oui"
+         }
+        },
+        {
+         "label": "Non",
+         "set": {
+          "tg": "non"
+         }
+        },
+        {
+         "label": "Ne sait pas",
+         "set": {
+          "tg": "nsp"
+         }
+        }
+       ],
+       "conseil": "Question pivot : la suite de l'entretien dépend de la réponse."
+      },
+      {
+       "id": "Q61",
+       "question": "Recevez-vous des alertes de panne, ou voyez-vous vos consommations sur un logiciel ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui",
+         "set": {
+          "tg": "oui"
+         }
+        },
+        {
+         "label": "Non",
+         "set": {
+          "tg": "non"
+         }
+        }
+       ],
+       "si": {
+        "tg": [
+         "nsp"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "P10",
+   "titre": "Branche OUI : télégestion existante",
+   "sections": [
+    {
+     "titre": "Niveau de gestion",
+     "questions": [
+      {
+       "id": "Q62",
+       "question": "S'agit-il d'une gestion à l'armoire ou au point lumineux ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "À l'armoire",
+         "set": {
+          "niveau": "armoire"
+         }
+        },
+        {
+         "label": "Au point lumineux",
+         "set": {
+          "niveau": "pl"
+         }
+        },
+        {
+         "label": "Les deux",
+         "set": {
+          "niveau": "deux"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titre": "Gestion à l'armoire",
+     "questions": [
+      {
+       "id": "Q63",
+       "question": "Combien d'armoires sont connectées ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Toutes"
+        },
+        {
+         "label": "La majorité"
+        },
+        {
+         "label": "Environ la moitié",
+         "set": {
+          "couverture": "faible"
+         }
+        },
+        {
+         "label": "Quelques-unes",
+         "set": {
+          "couverture": "faible"
+         }
+        }
+       ]
+      },
+      {
+       "id": "Q64",
+       "question": "Quels paramètres pouvez-vous modifier à distance ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Horaires d'allumage et d'extinction"
+        },
+        {
+         "label": "Calendrier et exceptions"
+        },
+        {
+         "label": "Départs un par un"
+        },
+        {
+         "label": "Seuils d'alarme"
+        },
+        {
+         "label": "Aucun",
+         "argument": "Système sous-exploité ou limité : opportunité de modernisation."
+        }
+       ]
+      },
+      {
+       "id": "Q65",
+       "question": "Quels types d'alertes recevez-vous ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Coupure d'alimentation"
+        },
+        {
+         "label": "Disjonction"
+        },
+        {
+         "label": "Défaut différentiel"
+        },
+        {
+         "label": "Consommation anormale"
+        },
+        {
+         "label": "Ouverture de porte"
+        },
+        {
+         "label": "Aucune",
+         "argument": "Sans alerte, la télégestion ne rend pas son principal service."
+        }
+       ]
+      },
+      {
+       "id": "Q66",
+       "question": "Vous travaillez avec quel fabricant ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Schréder"
+        },
+        {
+         "label": "Un autre fabricant"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "concurrent"
+       ]
+      },
+      {
+       "id": "Q67",
+       "question": "Par quel réseau communiquent les armoires ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "2G / 3G",
+         "argument": "Réseaux en cours d'arrêt en France : vérifier le calendrier de l'opérateur, une migration sera nécessaire."
+        },
+        {
+         "label": "4G / LTE-M"
+        },
+        {
+         "label": "Radio"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "reseau"
+       ]
+      },
+      {
+       "id": "Q68",
+       "question": "Mesurez-vous les consommations par armoire ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q69",
+       "question": "Pourquoi certaines armoires ne sont-elles pas connectées ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Budget",
+         "objections": [
+          "invest"
+         ]
+        },
+        {
+         "label": "Armoires vétustes"
+        },
+        {
+         "label": "Pas prioritaire"
+        },
+        {
+         "label": "Toutes sont connectées"
+        }
+       ]
+      },
+      {
+       "id": "Q70",
+       "question": "Envisagez-vous de passer au pilotage point par point ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Peut-être"
+        },
+        {
+         "label": "Non"
+        }
+       ],
+       "objections": [
+        "abonnement",
+        "roi"
+       ]
+      }
+     ],
+     "si": {
+      "niveau": [
+       "armoire",
+       "deux"
+      ]
+     }
+    },
+    {
+     "titre": "Gestion au point lumineux",
+     "questions": [
+      {
+       "id": "Q71",
+       "question": "Avec quel(s) fabricant(s) ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Schréder"
+        },
+        {
+         "label": "Un autre fabricant"
+        },
+        {
+         "label": "Plusieurs"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q72",
+       "question": "Quelle part des points lumineux est équipée ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 25 %",
+         "set": {
+          "couverture": "faible"
+         }
+        },
+        {
+         "label": "25 à 75 %"
+        },
+        {
+         "label": "Plus de 75 %"
+        },
+        {
+         "label": "100 %"
+        }
+       ]
+      },
+      {
+       "id": "Q73",
+       "question": "Quel type de module de contrôle ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "NEMA"
+        },
+        {
+         "label": "Zhaga"
+        },
+        {
+         "label": "Intégré au luminaire"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q74",
+       "question": "Par quel réseau communiquent les luminaires ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Cellulaire"
+        },
+        {
+         "label": "Maillage radio (mesh)"
+        },
+        {
+         "label": "Courant porteur"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "reseau"
+       ]
+      },
+      {
+       "id": "Q75",
+       "question": "Quels profils d'abaissement utilisez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Un profil unique",
+         "argument": "Un profil par zone ferait gagner davantage."
+        },
+        {
+         "label": "Un profil par zone ou par rue"
+        },
+        {
+         "label": "Des profils par saison ou événement"
+        },
+        {
+         "label": "Aucun",
+         "argument": "Fonction non exploitée : gisement d'économies immédiat."
+        }
+       ]
+      },
+      {
+       "id": "Q76",
+       "question": "Utilisez-vous la détection de présence ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "En test"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q77",
+       "question": "Les pannes remontent-elles luminaire par luminaire ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "En partie"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q78",
+       "question": "La solution est-elle interopérable (protocole TALQ) ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non",
+         "argument": "Solution fermée : argument interopérabilité à développer."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "dependance"
+       ]
+      },
+      {
+       "id": "Q79",
+       "question": "Les deux niveaux sont-ils sur la même plateforme ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, une seule plateforme"
+        },
+        {
+         "label": "Non, deux outils",
+         "argument": "Deux outils à suivre : une plateforme unique simplifie l'exploitation."
+        }
+       ],
+       "si": {
+        "niveau": [
+         "deux"
+        ]
+       }
+      }
+     ],
+     "si": {
+      "niveau": [
+       "pl",
+       "deux"
+      ]
+     }
+    },
+    {
+     "titre": "Avec qui la collectivité travaille et pourquoi",
+     "questions": [
+      {
+       "id": "Q80",
+       "question": "Télégestion, depuis combien de temps ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins d'un an"
+        },
+        {
+         "label": "1 à 3 ans"
+        },
+        {
+         "label": "3 à 6 ans"
+        },
+        {
+         "label": "Plus de 6 ans",
+         "argument": "Solution ancienne : vérifier son évolution et la compatibilité des réseaux."
+        }
+       ]
+      },
+      {
+       "id": "Q81",
+       "question": "Est-ce une expérimentation ou un déploiement ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Expérimentation / pilote",
+         "set": {
+          "statut": "pilote"
+         },
+         "argument": "Un pilote qui stagne est une opportunité de généralisation."
+        },
+        {
+         "label": "Déploiement partiel",
+         "set": {
+          "couverture": "faible"
+         }
+        },
+        {
+         "label": "Déploiement complet"
+        }
+       ]
+      },
+      {
+       "id": "Q82",
+       "question": "Qui a choisi la solution ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "La commune"
+        },
+        {
+         "label": "Le syndicat"
+        },
+        {
+         "label": "L'installateur"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "installateur",
+        "syndicat"
+       ]
+      },
+      {
+       "id": "Q83",
+       "question": "Est-ce qu'il y a des points positifs avec votre fournisseur actuel ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui",
+         "set": {
+          "q83": "oui"
+         }
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q83b",
+       "question": "Lesquels ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Fiabilité"
+        },
+        {
+         "label": "Simplicité d'utilisation"
+        },
+        {
+         "label": "Économies obtenues"
+        },
+        {
+         "label": "Réactivité du support"
+        },
+        {
+         "label": "Prix"
+        }
+       ],
+       "si": {
+        "q83": [
+         "oui"
+        ]
+       }
+      },
+      {
+       "id": "Q84",
+       "question": "Est-ce qu'il y a des aspects négatifs, ou la solution présente-t-elle certaines limites ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui",
+         "set": {
+          "q84": "oui"
+         }
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q84b",
+       "question": "Lesquels ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Coût de l'abonnement",
+         "objections": [
+          "abonnement"
+         ]
+        },
+        {
+         "label": "Outil complexe",
+         "objections": [
+          "competences"
+         ]
+        },
+        {
+         "label": "Communications peu fiables",
+         "objections": [
+          "reseau"
+         ]
+        },
+        {
+         "label": "Fonctions limitées"
+        },
+        {
+         "label": "Support insuffisant"
+        },
+        {
+         "label": "Solution fermée à d'autres marques",
+         "objections": [
+          "dependance"
+         ]
+        }
+       ],
+       "si": {
+        "q84": [
+         "oui"
+        ]
+       }
+      },
+      {
+       "id": "Q85",
+       "question": "Quels critères ont été déterminants dans votre choix ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Prix"
+        },
+        {
+         "label": "Fiabilité"
+        },
+        {
+         "label": "Simplicité de mise en œuvre"
+        },
+        {
+         "label": "Fonctions"
+        },
+        {
+         "label": "Recommandation de l'installateur ou du syndicat"
+        }
+       ]
+      },
+      {
+       "id": "Q86",
+       "question": "Comment jugez-vous le support et le service après-vente ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Satisfaisant"
+        },
+        {
+         "label": "Moyen"
+        },
+        {
+         "label": "Insatisfaisant",
+         "argument": "Mettez en avant l'accompagnement et la formation."
+        }
+       ]
+      },
+      {
+       "id": "Q87",
+       "question": "Quand arrive l'échéance du contrat d'abonnement ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins d'un an",
+         "argument": "Fenêtre idéale pour proposer une alternative."
+        },
+        {
+         "label": "1 à 3 ans"
+        },
+        {
+         "label": "Plus de 3 ans"
+        },
+        {
+         "label": "Sans engagement"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "contrat"
+       ]
+      },
+      {
+       "id": "Q88",
+       "question": "Si c'était à refaire, choisiriez-vous la même solution ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non",
+         "argument": "Ouverture claire : demandez ce qu'il changerait."
+        },
+        {
+         "label": "Hésite"
+        }
+       ]
+      },
+      {
+       "id": "Q89",
+       "question": "Quelle note sur 10 lui donneriez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "8 à 10",
+         "set": {
+          "note": "bonne"
+         }
+        },
+        {
+         "label": "5 à 7",
+         "set": {
+          "note": "moyenne"
+         },
+         "argument": "Demandez ce qui ferait passer la note à 9."
+        },
+        {
+         "label": "Moins de 5",
+         "set": {
+          "note": "mauvaise"
+         }
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titre": "Usage de la télégestion",
+     "questions": [
+      {
+       "id": "Q90",
+       "question": "Qui utilise la plateforme de télégestion ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Les agents"
+        },
+        {
+         "label": "Le responsable éclairage / DST"
+        },
+        {
+         "label": "L'installateur seulement",
+         "set": {
+          "usage": "installateur"
+         },
+         "argument": "La commune n'a pas la main sur ses données."
+        },
+        {
+         "label": "Les élus"
+        },
+        {
+         "label": "Plus personne",
+         "set": {
+          "usage": "abandon"
+         },
+         "argument": "Outil abandonné : comprendre pourquoi."
+        }
+       ],
+       "objections": [
+        "donnees"
+       ]
+      },
+      {
+       "id": "Q91",
+       "question": "À quelle fréquence ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Tous les jours"
+        },
+        {
+         "label": "Chaque semaine"
+        },
+        {
+         "label": "De temps en temps"
+        },
+        {
+         "label": "Jamais",
+         "set": {
+          "usage": "abandon"
+         }
+        }
+       ]
+      },
+      {
+       "id": "Q92",
+       "question": "Quelles fonctions utilisez-vous vraiment ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Alertes de panne"
+        },
+        {
+         "label": "Horaires"
+        },
+        {
+         "label": "Abaissement"
+        },
+        {
+         "label": "Consommations"
+        },
+        {
+         "label": "Inventaire"
+        },
+        {
+         "label": "Rapports"
+        }
+       ]
+      },
+      {
+       "id": "Q93",
+       "question": "Les utilisateurs ont-ils été formés ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "En partie"
+        },
+        {
+         "label": "Non",
+         "argument": "Proposez une formation : souvent la cause d'un outil peu utilisé."
+        }
+       ],
+       "objections": [
+        "competences"
+       ]
+      },
+      {
+       "id": "Q94",
+       "question": "Les élus ont-ils accès aux tableaux de bord ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non",
+         "argument": "Des tableaux de bord pour les élus valorisent le projet."
+        }
+       ]
+      },
+      {
+       "id": "Q95",
+       "question": "Les alertes sont-elles traitées, et en combien de temps ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 24 h"
+        },
+        {
+         "label": "Quelques jours"
+        },
+        {
+         "label": "Pas suivies"
+        }
+       ]
+      },
+      {
+       "id": "Q96",
+       "question": "Les données servent-elles à décider (bilans énergie, rapports aux élus) ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Peu"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q97",
+       "question": "La plateforme est-elle reliée à l'outil de maintenance de l'installateur ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titre": "Couverture et extension",
+     "questions": [
+      {
+       "id": "Q98",
+       "question": "Pourquoi certaines zones ne sont-elles pas couvertes ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Budget",
+         "objections": [
+          "invest"
+         ]
+        },
+        {
+         "label": "Luminaires incompatibles"
+        },
+        {
+         "label": "Pas prioritaire"
+        },
+        {
+         "label": "Pilote limité volontairement",
+         "set": {
+          "statut": "pilote"
+         }
+        },
+        {
+         "label": "Tout est couvert"
+        }
+       ]
+      },
+      {
+       "id": "Q99",
+       "question": "Les rénovations prévues intègrent-elles la télégestion ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non",
+         "argument": "Proposez d'intégrer la télégestion au cahier des charges."
+        },
+        {
+         "label": "Pas de rénovation prévue"
+        }
+       ]
+      },
+      {
+       "id": "Q100",
+       "question": "Envisagez-vous des capteurs supplémentaires ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Détection de présence"
+        },
+        {
+         "label": "Comptage du trafic"
+        },
+        {
+         "label": "Environnement (bruit, qualité de l'air)"
+        },
+        {
+         "label": "Non"
+        }
+       ],
+       "objections": [
+        "cyber"
+       ]
+      }
+     ]
+    }
+   ],
+   "si": {
+    "tg": [
+     "oui"
+    ]
+   }
+  },
+  {
+   "id": "P11",
+   "titre": "Branche NON : pas de télégestion",
+   "sections": [
+    {
+     "titre": "Gestion actuelle de l'éclairage",
+     "questions": [
+      {
+       "id": "Q101",
+       "question": "Comment gérez-vous la modification des plages horaires ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Déplacement armoire par armoire",
+         "argument": "Chaque modification coûte un déplacement : la télégestion le supprime."
+        },
+        {
+         "label": "Horloges astronomiques programmées une fois pour toutes"
+        },
+        {
+         "label": "C'est l'installateur qui s'en charge"
+        },
+        {
+         "label": "Les horaires ne sont jamais modifiés"
+        }
+       ],
+       "objections": [
+        "horloge"
+       ]
+      },
+      {
+       "id": "Q102",
+       "question": "Combien de temps faut-il pour reprogrammer toutes les armoires ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins d'une journée"
+        },
+        {
+         "label": "Quelques jours",
+         "argument": "Avec la télégestion : quelques minutes depuis un ordinateur."
+        },
+        {
+         "label": "Plus d'une semaine",
+         "argument": "Avec la télégestion : quelques minutes depuis un ordinateur."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q103",
+       "question": "Comment détectez-vous une panne ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Signalements d'habitants",
+         "argument": "La commune découvre ses pannes par ses habitants : argument fort."
+        },
+        {
+         "label": "Élus ou agents qui la remarquent"
+        },
+        {
+         "label": "Tournées de nuit"
+        },
+        {
+         "label": "L'installateur"
+        },
+        {
+         "label": "Pas de méthode établie"
+        }
+       ],
+       "objections": [
+        "ca_marche"
+       ]
+      },
+      {
+       "id": "Q104",
+       "question": "Comment localisez-vous la panne ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Adresse donnée par l'habitant"
+        },
+        {
+         "label": "Recherche sur place",
+         "argument": "Temps perdu à chaque panne : la plateforme localise le luminaire en défaut."
+        },
+        {
+         "label": "Plan ou SIG"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q105",
+       "question": "Combien de signalements d'habitants recevez-vous par mois ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 5"
+        },
+        {
+         "label": "5 à 20"
+        },
+        {
+         "label": "Plus de 20",
+         "argument": "Qualité de service perçue à améliorer : argument fort pour les élus."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q106",
+       "question": "Quel est le délai moyen entre une panne et sa réparation ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 48 h"
+        },
+        {
+         "label": "Environ une semaine"
+        },
+        {
+         "label": "Plus d'une semaine",
+         "argument": "Délai long : la télégestion raccourcit la détection à quelques heures."
+        },
+        {
+         "label": "Ne sait pas",
+         "argument": "Sans mesure, pas de pilotage : la plateforme fournit ces indicateurs."
+        }
+       ]
+      },
+      {
+       "id": "Q107",
+       "question": "Comment suivez-vous vos consommations ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Avec les factures"
+        },
+        {
+         "label": "Relevés des compteurs"
+        },
+        {
+         "label": "Outil du syndicat ou du fournisseur d'énergie"
+        },
+        {
+         "label": "Pas de suivi",
+         "argument": "La télégestion mesure la consommation réelle."
+        }
+       ]
+      },
+      {
+       "id": "Q108",
+       "question": "Est-ce que vous avez déjà réfléchi à des solutions de télégestion ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui",
+         "set": {
+          "q108": "oui"
+         }
+        },
+        {
+         "label": "Non",
+         "set": {
+          "q108": "non"
+         }
+        }
+       ]
+      },
+      {
+       "id": "Q108b",
+       "question": "Pourquoi le projet n'a-t-il pas abouti ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Coût",
+         "objections": [
+          "invest"
+         ]
+        },
+        {
+         "label": "Autres priorités",
+         "objections": [
+          "pas_maintenant"
+         ]
+        },
+        {
+         "label": "Difficultés techniques",
+         "objections": [
+          "install"
+         ]
+        },
+        {
+         "label": "Pas convaincus par l'offre",
+         "set": {
+          "frein": "mauvaise_exp"
+         },
+         "objections": [
+          "mauvaise_exp"
+         ]
+        },
+        {
+         "label": "Changement d'élus ou d'équipe"
+        }
+       ],
+       "si": {
+        "q108": [
+         "oui"
+        ]
+       }
+      },
+      {
+       "id": "Q108c",
+       "question": "Est-ce un choix, ou le sujet ne vous a jamais été proposé ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "C'est un choix",
+         "objections": [
+          "ca_marche"
+         ]
+        },
+        {
+         "label": "Jamais proposé",
+         "argument": "Terrain vierge : prenez le temps d'expliquer, avec un exemple concret."
+        }
+       ],
+       "si": {
+        "q108": [
+         "non"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "titre": "Réglage et maintenance",
+     "questions": [
+      {
+       "id": "Q109",
+       "question": "Comment procédez-vous pour le réglage de votre installation ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Nos agents en armoire"
+        },
+        {
+         "label": "L'installateur sur demande"
+        },
+        {
+         "label": "Le syndicat"
+        },
+        {
+         "label": "Réglages d'usine jamais modifiés",
+         "argument": "Paramètres jamais ajustés : économies faciles à démontrer."
+        }
+       ]
+      },
+      {
+       "id": "Q110",
+       "question": "Comment est organisée aujourd'hui la maintenance de votre éclairage public ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Régie",
+         "set": {
+          "maint": "regie"
+         }
+        },
+        {
+         "label": "Installateur",
+         "set": {
+          "maint": "installateur"
+         }
+        },
+        {
+         "label": "Syndicat d'énergie",
+         "set": {
+          "maint": "syndicat"
+         }
+        },
+        {
+         "label": "Mixte",
+         "set": {
+          "maint": "mixte"
+         }
+        }
+       ],
+       "si": {
+        "maint": [
+         "?"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "titre": "Maintenance en régie",
+     "questions": [
+      {
+       "id": "Q111",
+       "question": "Combien d'agents travaillent sur l'éclairage ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Aucun dédié, agents polyvalents",
+         "argument": "Des agents polyvalents gagnent du temps avec des interventions ciblées."
+        },
+        {
+         "label": "1"
+        },
+        {
+         "label": "2 ou 3"
+        },
+        {
+         "label": "Plus de 3"
+        }
+       ],
+       "objections": [
+        "competences",
+        "pas_temps"
+       ]
+      },
+      {
+       "id": "Q112",
+       "question": "Disposez-vous d'une nacelle et des habilitations électriques ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, les deux"
+        },
+        {
+         "label": "Nacelle louée",
+         "argument": "Chaque location coûte : mieux vaut savoir exactement où intervenir."
+        },
+        {
+         "label": "Habilitations manquantes"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q113",
+       "question": "Avez-vous une astreinte interne ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      },
+      {
+       "id": "Q114",
+       "question": "Combien d'heures par mois vos agents passent-ils à chercher des pannes ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins de 5 h"
+        },
+        {
+         "label": "5 à 20 h"
+        },
+        {
+         "label": "Plus de 20 h",
+         "argument": "Temps à chiffrer : c'est ce que la télégestion fait gagner."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      }
+     ],
+     "si": {
+      "maint": [
+       "regie",
+       "mixte"
+      ]
+     }
+    },
+    {
+     "titre": "Maintenance par un installateur",
+     "questions": [
+      {
+       "id": "Q115",
+       "question": "Le contrat est-il forfaitaire, à l'intervention ou mixte ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Forfaitaire"
+        },
+        {
+         "label": "À l'intervention",
+         "argument": "Chaque déplacement évité est une économie directe."
+        },
+        {
+         "label": "Mixte"
+        }
+       ],
+       "objections": [
+        "installateur"
+       ]
+      },
+      {
+       "id": "Q116",
+       "question": "Les déplacements de diagnostic sont-ils facturés ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui",
+         "argument": "La télégestion supprime une bonne partie de ces déplacements."
+        },
+        {
+         "label": "Non, inclus"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q117",
+       "question": "Existe-t-il des engagements de délai ? Une astreinte ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Délai garanti"
+        },
+        {
+         "label": "Astreinte prévue"
+        },
+        {
+         "label": "Aucun engagement",
+         "argument": "Sans engagement de délai, la télégestion donne à la commune un moyen de contrôle."
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      },
+      {
+       "id": "Q118",
+       "question": "Quand arrive l'échéance du marché ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Moins d'un an",
+         "argument": "Fenêtre idéale : proposez d'aider à rédiger les prescriptions."
+        },
+        {
+         "label": "1 à 3 ans"
+        },
+        {
+         "label": "Plus de 3 ans"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "contrat"
+       ]
+      },
+      {
+       "id": "Q119",
+       "question": "L'installateur vous fournit-il un reporting ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, régulier"
+        },
+        {
+         "label": "Sur demande"
+        },
+        {
+         "label": "Non",
+         "argument": "La plateforme fournit ces rapports automatiquement."
+        }
+       ]
+      },
+      {
+       "id": "Q120",
+       "question": "Comment contrôlez-vous la qualité du service rendu ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Indicateurs et pénalités"
+        },
+        {
+         "label": "Réunions de suivi"
+        },
+        {
+         "label": "Pas de contrôle",
+         "argument": "La télégestion permet de vérifier les délais d'intervention."
+        }
+       ]
+      }
+     ],
+     "si": {
+      "maint": [
+       "installateur",
+       "mixte"
+      ]
+     }
+    },
+    {
+     "titre": "Maintenance par le syndicat d'énergie",
+     "questions": [
+      {
+       "id": "Q121",
+       "question": "Quel rôle joue le syndicat ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Travaux"
+        },
+        {
+         "label": "Exploitation et maintenance"
+        },
+        {
+         "label": "Conseil / achat d'énergie"
+        }
+       ],
+       "objections": [
+        "syndicat"
+       ]
+      },
+      {
+       "id": "Q122",
+       "question": "Le syndicat a-t-il une stratégie de télégestion ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui, une plateforme à l'échelle du département",
+         "argument": "Vérifier la compatibilité avec la plateforme du syndicat."
+        },
+        {
+         "label": "En réflexion",
+         "argument": "Proposez une rencontre avec le syndicat."
+        },
+        {
+         "label": "Non"
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ]
+      }
+     ],
+     "si": {
+      "maint": [
+       "syndicat"
+      ]
+     }
+    },
+    {
+     "titre": "Préparer le terrain technique",
+     "questions": [
+      {
+       "id": "Q123",
+       "question": "La couverture du réseau mobile est-elle bonne sur toute la commune ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Il y a des zones blanches",
+         "objections": [
+          "reseau"
+         ]
+        },
+        {
+         "label": "Ne sait pas"
+        }
+       ],
+       "objections": [
+        "reseau"
+       ]
+      },
+      {
+       "id": "Q124",
+       "question": "Disposez-vous des plans du réseau et de l'emplacement des armoires ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui"
+        },
+        {
+         "label": "Partiels"
+        },
+        {
+         "label": "Non"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "si": {
+    "tg": [
+     "non"
+    ]
+   }
+  },
+  {
+   "id": "P12",
+   "titre": "Conclure l'entretien",
+   "sections": [
+    {
+     "titre": null,
+     "questions": [
+      {
+       "id": "Q125",
+       "question": "Si nous vous démontrons un gain chiffré sur votre parc, seriez-vous prêt à étudier un projet ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Oui",
+         "set": {
+          "appetence": "chaud"
+         }
+        },
+        {
+         "label": "Oui, mais d'abord tester",
+         "set": {
+          "appetence": "test"
+         }
+        },
+        {
+         "label": "Pas maintenant",
+         "set": {
+          "appetence": "froid"
+         },
+         "objections": [
+          "pas_maintenant"
+         ]
+        }
+       ],
+       "conseil": "Question de closing : elle teste l'appétence et oriente vers un projet ou un pilote.",
+       "objections": [
+        "pas_maintenant",
+        "elus"
+       ]
+      },
+      {
+       "id": "Q126",
+       "question": "Quelle forme de projet préférez-vous ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Projet global"
+        },
+        {
+         "label": "Déploiement par tranches"
+        },
+        {
+         "label": "Pilote sur une zone test",
+         "set": {
+          "appetence": "test"
+         }
+        }
+       ],
+       "objections": [
+        "invest"
+       ]
+      },
+      {
+       "id": "Q127",
+       "question": "Quelles données pouvez-vous nous transmettre ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Factures d'énergie"
+        },
+        {
+         "label": "Inventaire du parc"
+        },
+        {
+         "label": "Marché de maintenance"
+        },
+        {
+         "label": "Plans du réseau"
+        },
+        {
+         "label": "Aucune pour l'instant"
+        }
+       ],
+       "objections": [
+        "pas_temps"
+       ]
+      },
+      {
+       "id": "Q128",
+       "question": "Qui devons-nous associer au prochain rendez-vous ?",
+       "multi": true,
+       "options": [
+        {
+         "label": "Un élu"
+        },
+        {
+         "label": "Le DST"
+        },
+        {
+         "label": "L'installateur"
+        },
+        {
+         "label": "Le syndicat"
+        },
+        {
+         "label": "Le service informatique"
+        }
+       ]
+      },
+      {
+       "id": "Q129",
+       "question": "Quelle est la prochaine étape ?",
+       "multi": false,
+       "options": [
+        {
+         "label": "Démonstration de la plateforme Exedra"
+        },
+        {
+         "label": "Diagnostic du parc"
+        },
+        {
+         "label": "Chiffrage"
+        },
+        {
+         "label": "Pilote"
+        },
+        {
+         "label": "Relance à une date convenue"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "objections": {
+  "abonnement": {
+   "theme": "Coût",
+   "objection": "L'abonnement est trop cher.",
+   "reponse": "Comparons-le à ce qu'il fait économiser : moins de tournées de nuit, pannes détectées et réparées plus vite, abaissement fin qui réduit la consommation. La communication passe par le réseau cellulaire : aucune infrastructure à créer ni à entretenir. C'est comme les abonnements du quotidien (téléphone, musique, TV) : on paie un service qui rapporte plus qu'il ne coûte.",
+   "rebond": "Combien vous coûte aujourd'hui une tournée de nuit ? Et une panne qui reste éteinte quinze jours ?"
+  },
+  "invest": {
+   "theme": "Coût",
+   "objection": "Nous n'avons pas le budget d'investissement.",
+   "reponse": "Le projet peut être phasé : les armoires d'abord, qui coûtent peu, puis le point lumineux au fil des rénovations. Plusieurs financements peuvent aider selon les années : CEE, DETR/DSIL, Fonds vert, aides du syndicat d'énergie. Les économies réalisées financent en partie les tranches suivantes.",
+   "rebond": "Votre syndicat d'énergie propose-t-il des aides ? Voulez-vous qu'on regarde ensemble les financements possibles ?"
+  },
+  "roi": {
+   "theme": "Coût",
+   "objection": "Le retour sur investissement est trop long.",
+   "reponse": "Le retour dépend de votre parc : énergie, maintenance, tournées évitées, durée de vie des LED allongée par l'abaissement. Plutôt qu'une moyenne nationale, je vous propose de le calculer sur vos propres chiffres.",
+   "rebond": "Pouvez-vous me transmettre vos consommations et le montant du marché de maintenance ?"
+  },
+  "led_suffit": {
+   "theme": "Besoin",
+   "objection": "On est passés en LED, on fait déjà des économies.",
+   "reponse": "La LED réduit la puissance installée. La télégestion ajoute le pilotage : abaissement rue par rue, panne détectée sans attendre l'habitant, consommation réelle mesurée. Elle allonge aussi la durée de vie des LED en évitant de les faire travailler à pleine puissance toute la nuit.",
+   "rebond": "Savez-vous aujourd'hui combien consomme réellement chaque quartier ?"
+  },
+  "ca_marche": {
+   "theme": "Besoin",
+   "objection": "Ça fonctionne très bien comme ça.",
+   "reponse": "Tant mieux, l'objectif n'est pas de tout changer. Mais comment savez-vous aujourd'hui qu'un lampadaire est en panne, et depuis combien de temps ? La télégestion rend visible ce qui ne l'est pas : pannes, consommations réelles, dérives.",
+   "rebond": "Combien de signalements d'habitants avez-vous reçus le mois dernier ?"
+  },
+  "horloge": {
+   "theme": "Besoin",
+   "objection": "Nous avons déjà des horloges astronomiques.",
+   "reponse": "L'horloge règle l'heure d'allumage, rien de plus. Elle ne signale pas une panne, ne mesure pas la consommation, et chaque modification oblige à se déplacer. L'horloge connectée fait la même chose, avec la surveillance et le pilotage à distance en plus.",
+   "rebond": "Lors du dernier changement d'horaires, combien d'armoires a-t-il fallu reprogrammer sur place ?"
+  },
+  "extinction": {
+   "theme": "Besoin",
+   "objection": "Nous éteignons la nuit, donc la télégestion ne sert à rien.",
+   "reponse": "L'extinction totale fait souvent débat : sécurité, événements, plaintes. La télégestion permet de sortir du tout ou rien : abaissement plutôt qu'extinction sur certaines rues, rallumage ponctuel pour une fête, horaires différents selon les quartiers, le tout sans déplacement.",
+   "rebond": "Comment gérez-vous les soirs de fête ou les demandes de rallumage d'un quartier ?"
+  },
+  "competences": {
+   "theme": "Organisation",
+   "objection": "Nos équipes n'ont ni le temps ni les compétences.",
+   "reponse": "La plateforme est une interface web avec des alertes : pas besoin d'être expert. La formation est prévue, et l'installateur peut exploiter l'outil pour vous. Surtout, la télégestion fait gagner du temps : moins de tournées, des interventions ciblées.",
+   "rebond": "Combien d'heures par mois vos agents passent-ils à chercher des pannes ?"
+  },
+  "pas_temps": {
+   "theme": "Organisation",
+   "objection": "On n'a pas le temps de se pencher sur le sujet.",
+   "reponse": "On prépare le travail pour vous : un diagnostic à partir de vos factures et de votre inventaire, et une note de synthèse prête à présenter aux élus. De votre côté, il suffit de nous transmettre quelques documents.",
+   "rebond": "Qui pourrait nous transmettre les factures d'énergie de l'éclairage ?"
+  },
+  "installateur": {
+   "theme": "Organisation",
+   "objection": "C'est notre installateur qui s'occupe de tout.",
+   "reponse": "Très bien : la télégestion lui facilite le travail, il sait où intervenir et avec quelle pièce. La commune, elle, garde la visibilité sur son patrimoine et sur la qualité du service rendu. La télégestion peut aussi être inscrite dans le prochain marché.",
+   "rebond": "Aujourd'hui, comment contrôlez-vous les délais d'intervention de votre prestataire ?"
+  },
+  "syndicat": {
+   "theme": "Organisation",
+   "objection": "C'est le syndicat d'énergie qui décide.",
+   "reponse": "Nous pouvons travailler avec le syndicat. La commune peut exprimer son besoin et demander l'option télégestion. Je vous propose une réunion à trois pour avancer ensemble.",
+   "rebond": "Qui est votre interlocuteur au syndicat ?"
+  },
+  "contrat": {
+   "theme": "Organisation",
+   "objection": "On attend la fin du contrat en cours.",
+   "reponse": "C'est justement le bon moment pour préparer la suite : nous pouvons vous aider à rédiger les prescriptions télégestion du prochain cahier des charges. Et un pilote peut démarrer avant l'échéance.",
+   "rebond": "Quand commencez-vous à rédiger le nouveau cahier des charges ?"
+  },
+  "cyber": {
+   "theme": "Technique",
+   "objection": "Et la cybersécurité ?",
+   "reponse": "C'est une vraie question et elle est prise au sérieux : communications chiffrées, plateforme hébergée et sécurisée, droits d'accès par utilisateur, aucun accès à vos réseaux informatiques internes. Nous pouvons fournir la documentation sécurité à votre service informatique.",
+   "rebond": "Voulez-vous que nous organisions un échange avec votre service informatique ?"
+  },
+  "dependance": {
+   "theme": "Technique",
+   "objection": "On a peur d'être enfermés chez un fournisseur.",
+   "reponse": "La solution repose sur des standards ouverts : prises NEMA et Zhaga, protocole TALQ pour la plateforme. Vous gardez le choix de vos luminaires, et la plateforme peut piloter des matériels d'autres marques certifiés.",
+   "rebond": "Votre système actuel accepte-t-il d'autres marques que celle d'origine ?"
+  },
+  "concurrent": {
+   "theme": "Technique",
+   "objection": "On travaille déjà avec un autre fabricant.",
+   "reponse": "Pas besoin de tout changer. La plateforme est ouverte (protocole TALQ) et les modules NEMA ou Zhaga s'installent sur des luminaires d'autres marques compatibles. On peut compléter l'existant plutôt que le remplacer.",
+   "rebond": "Qu'est-ce qui vous manque aujourd'hui avec ce fabricant ?"
+  },
+  "reseau": {
+   "theme": "Technique",
+   "objection": "La couverture réseau est mauvaise chez nous.",
+   "reponse": "Nous réalisons une étude de couverture avant tout projet. Selon les zones, un maillage radio entre luminaires peut compléter le réseau mobile. En cas de perte de communication, le luminaire continue d'appliquer son profil programmé : l'éclairage n'est jamais interrompu.",
+   "rebond": "Quelles zones vous semblent mal couvertes ? On peut commencer la vérification par là."
+  },
+  "install": {
+   "theme": "Technique",
+   "objection": "L'installation va être lourde, avec des travaux.",
+   "reponse": "À l'armoire, il s'agit de remplacer ou de compléter l'horloge : quelques heures par armoire. Au point lumineux, sur un luminaire équipé d'une prise NEMA ou Zhaga, le module se pose en quelques minutes, sans câblage supplémentaire.",
+   "rebond": "Vos luminaires récents ont-ils une prise sur le dessus ou sous la crosse ?"
+  },
+  "donnees": {
+   "theme": "Technique",
+   "objection": "À qui appartiennent les données ?",
+   "reponse": "La collectivité garde la main sur ses données : accès direct à la plateforme, tableaux de bord et export. Même si l'installateur exploite, la commune voit tout.",
+   "rebond": "Qui devrait avoir accès aux tableaux de bord chez vous ?"
+  },
+  "ondes": {
+   "theme": "Technique",
+   "objection": "Les habitants vont s'inquiéter des ondes.",
+   "reponse": "Les modules émettent à faible puissance, de façon brève et intermittente, dans le respect des normes en vigueur. Nous pouvons fournir les fiches de conformité et une note d'information pour les habitants.",
+   "rebond": "Souhaitez-vous un document d'information à destination des habitants ?"
+  },
+  "mauvaise_exp": {
+   "theme": "Confiance",
+   "objection": "Nous avons déjà eu une mauvaise expérience.",
+   "reponse": "Je comprends. Qu'est-ce qui n'a pas fonctionné ? (laisser parler, reformuler). Je vous propose un pilote limité, avec des critères de réussite que vous fixez, et des références de communes comparables que vous pouvez appeler.",
+   "rebond": "Si on fixe ensemble trois critères de réussite, lesquels choisiriez-vous ?"
+  },
+  "elus": {
+   "theme": "Décision",
+   "objection": "Les élus ne sont pas convaincus, ils ont d'autres priorités.",
+   "reponse": "Donnons au porteur du dossier les bons arguments : économies chiffrées, sobriété maîtrisée, réactivité face aux habitants, image de la commune. Nous pouvons préparer une note de synthèse ou venir présenter en commission.",
+   "rebond": "Quel élu faudrait-il convaincre en priorité, et sur quel argument ?"
+  },
+  "pas_maintenant": {
+   "theme": "Décision",
+   "objection": "Ce n'est pas le moment.",
+   "reponse": "Pas de problème. Pour préparer le moment venu, je vous propose un diagnostic de votre parc et une estimation des gains : vous aurez les éléments en main pour le prochain arbitrage budgétaire.",
+   "rebond": "Quand se tient votre prochain arbitrage budgétaire ? Je vous recontacte un mois avant."
+  }
+ },
+ "recommandations": {
+  "armoire": {
+   "titre": "Télégestion à l'armoire",
+   "accroche": "Reprendre la main sur tout le réseau rapidement, sans toucher aux luminaires.",
+   "solution": [
+    "Horloge connectée dans chaque armoire, pilotée depuis la plateforme Exedra",
+    "Horaires d'allumage et d'extinction modifiés à distance, par armoire ou par groupe",
+    "Alarmes : coupure d'alimentation, disjonction, consommation anormale",
+    "Mesure des consommations par armoire"
+   ],
+   "etapes": [
+    "Récupérer la liste et l'état des armoires",
+    "Chiffrer l'équipement des armoires",
+    "Proposer une démonstration de la plateforme",
+    "Préparer le passage au point lumineux lors des rénovations"
+   ]
+  },
+  "pl": {
+   "titre": "Télégestion au point lumineux",
+   "accroche": "Piloter chaque luminaire : la bonne lumière, au bon endroit, au bon moment.",
+   "solution": [
+    "Module NEMA ou Zhaga sur chaque luminaire LED",
+    "Profils d'abaissement par rue ou par zone, modifiables à distance",
+    "Détection de panne luminaire par luminaire, géolocalisée",
+    "Consommation réelle par point, option détection de présence",
+    "Plateforme Exedra, ouverte (protocole TALQ)"
+   ],
+   "etapes": [
+    "Vérifier la compatibilité NEMA/Zhaga des luminaires",
+    "Étude de couverture réseau",
+    "Chiffrage avec scénarios d'abaissement par zone",
+    "Démonstration Exedra sur un cas proche"
+   ]
+  },
+  "mixte": {
+   "titre": "Solution mixte : armoire + point lumineux",
+   "accroche": "Tout le réseau supervisé, et un pilotage fin là où le parc est rénové.",
+   "solution": [
+    "Horloges connectées sur toutes les armoires",
+    "Modules NEMA/Zhaga sur les zones LED et prioritaires",
+    "Une seule plateforme Exedra pour l'ensemble",
+    "Extension au point lumineux au rythme des rénovations"
+   ],
+   "etapes": [
+    "Cartographier zones LED et non LED",
+    "Définir les zones prioritaires avec le client",
+    "Chiffrage en deux tranches",
+    "Planning de déploiement aligné sur les rénovations"
+   ]
+  },
+  "renov": {
+   "titre": "Intégrer la télégestion à la rénovation",
+   "accroche": "Rénover sans télégestion, c'est devoir revenir plus tard : on l'intègre dès maintenant.",
+   "solution": [
+    "Luminaires LED avec prises NEMA/Zhaga dans le cahier des charges",
+    "Modules et plateforme intégrés au projet",
+    "Télégestion à l'armoire sur le reste du parc en attendant",
+    "Aide à la rédaction des prescriptions techniques"
+   ],
+   "etapes": [
+    "Récupérer le calendrier de rénovation",
+    "Proposer des prescriptions pour le cahier des charges",
+    "Chiffrer l'option télégestion",
+    "Identifier les aides mobilisables"
+   ]
+  },
+  "pilote": {
+   "titre": "Pilote sur une zone test",
+   "accroche": "Tester en conditions réelles avant de décider, avec des critères de réussite clairs.",
+   "solution": [
+    "Une zone représentative (1 à 3 armoires, quelques dizaines de points lumineux)",
+    "Durée définie (6 à 12 mois)",
+    "Critères de réussite fixés ensemble : économies, délais de réparation, satisfaction",
+    "Bilan chiffré présenté aux élus en fin de pilote"
+   ],
+   "etapes": [
+    "Choisir la zone test avec le client",
+    "Fixer les indicateurs et la durée",
+    "Former les utilisateurs",
+    "Planifier les bilans à mi-parcours et final"
+   ]
+  },
+  "migration": {
+   "titre": "Moderniser ou remplacer la télégestion existante",
+   "accroche": "Votre télégestion doit vous servir : on repart de vos irritants.",
+   "solution": [
+    "Audit de l'existant : matériel, usage, coûts, irritants",
+    "Migration vers la plateforme ouverte Exedra (TALQ), en gardant ce qui peut l'être",
+    "Accompagnement et formation des utilisateurs",
+    "Accès direct de la commune à ses données"
+   ],
+   "etapes": [
+    "Lister précisément les irritants exprimés",
+    "Inventorier le matériel compatible",
+    "Démonstration ciblée sur ces irritants",
+    "Proposer une migration par étapes"
+   ]
+  },
+  "extension_pl": {
+   "titre": "Étendre la télégestion au point lumineux",
+   "accroche": "Vous pilotez vos armoires : passez au pilotage de chaque luminaire LED.",
+   "solution": [
+    "Modules NEMA/Zhaga sur les luminaires LED déjà installés",
+    "Profils d'abaissement par rue, pannes détectées luminaire par luminaire",
+    "Intégration dans la même plateforme",
+    "Option détection de présence sur les zones adaptées"
+   ],
+   "etapes": [
+    "Compter les luminaires LED compatibles",
+    "Choisir les zones prioritaires",
+    "Chiffrer l'extension",
+    "Démonstration des fonctions point lumineux"
+   ]
+  },
+  "generalisation": {
+   "titre": "Généraliser la télégestion",
+   "accroche": "La première tranche a fait ses preuves : étendons-la à toute la commune.",
+   "solution": [
+    "Bilan chiffré de la zone déjà équipée",
+    "Déploiement par tranches sur le reste du parc",
+    "Une plateforme unique pour tout le parc",
+    "Montée en compétences des équipes"
+   ],
+   "etapes": [
+    "Récupérer les résultats de la zone équipée",
+    "Construire la note de bilan pour les élus",
+    "Chiffrer la généralisation par tranches",
+    "Caler le calendrier budgétaire"
+   ]
+  },
+  "services": {
+   "titre": "Enrichir les usages de la télégestion",
+   "accroche": "Votre télégestion fonctionne : faites-en un outil de pilotage de la ville.",
+   "solution": [
+    "Optimisation des profils d'abaissement par zone",
+    "Détection de présence sur les zones peu fréquentées",
+    "Capteurs complémentaires (trafic, environnement) sur le réseau d'éclairage",
+    "Tableaux de bord et rapports pour les élus"
+   ],
+   "etapes": [
+    "Analyser les données actuelles avec le client",
+    "Identifier 2 ou 3 usages prioritaires",
+    "Proposer un atelier smart city",
+    "Chiffrer les compléments"
+   ]
+  }
+ },
+ "regles": [
+  {
+   "si": {
+    "tg": [
+     "oui"
+    ],
+    "note": [
+     "mauvaise"
+    ]
+   },
+   "reco": "migration",
+   "raison": "Télégestion existante jugée insatisfaisante."
+  },
+  {
+   "si": {
+    "tg": [
+     "oui"
+    ],
+    "usage": [
+     "abandon",
+     "installateur"
+    ],
+    "note": [
+     "mauvaise",
+     "moyenne"
+    ]
+   },
+   "reco": "migration",
+   "raison": "Outil existant peu ou pas utilisé par la commune."
+  },
+  {
+   "si": {
+    "tg": [
+     "oui"
+    ],
+    "statut": [
+     "pilote"
+    ]
+   },
+   "reco": "generalisation",
+   "raison": "Pilote en cours à transformer en déploiement."
+  },
+  {
+   "si": {
+    "tg": [
+     "oui"
+    ],
+    "niveau": [
+     "armoire"
+    ],
+    "led": [
+     "moyen",
+     "fort"
+    ]
+   },
+   "reco": "extension_pl",
+   "raison": "Télégestion à l'armoire seulement, alors que le parc LED permet d'aller au point lumineux."
+  },
+  {
+   "si": {
+    "tg": [
+     "oui"
+    ],
+    "couverture": [
+     "faible"
+    ]
+   },
+   "reco": "generalisation",
+   "raison": "Une partie du parc seulement est couverte."
+  },
+  {
+   "si": {
+    "tg": [
+     "oui"
+    ]
+   },
+   "reco": "services",
+   "raison": "Télégestion en place et satisfaisante : on enrichit les usages."
+  },
+  {
+   "si": {
+    "frein": [
+     "mauvaise_exp"
+    ]
+   },
+   "reco": "pilote",
+   "raison": "Mauvaise expérience passée : on rassure par un test encadré."
+  },
+  {
+   "si": {
+    "appetence": [
+     "test",
+     "froid"
+    ]
+   },
+   "reco": "pilote",
+   "raison": "Le client veut voir avant de s'engager."
+  },
+  {
+   "si": {
+    "led": [
+     "fort"
+    ]
+   },
+   "reco": "pl",
+   "raison": "Parc majoritairement LED, pilotable au point lumineux."
+  },
+  {
+   "si": {
+    "led": [
+     "moyen"
+    ]
+   },
+   "reco": "mixte",
+   "raison": "Parc en partie rénové : armoires partout, point lumineux sur les zones LED."
+  },
+  {
+   "si": {
+    "renov": [
+     "oui"
+    ]
+   },
+   "reco": "renov",
+   "raison": "Rénovation à venir : on intègre la télégestion dès la conception."
+  },
+  {
+   "si": {},
+   "reco": "armoire",
+   "raison": "Parc peu rénové : on démarre par l'armoire, rapide et peu coûteux."
+  }
+ ]
+}
