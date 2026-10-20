@@ -1,0 +1,829 @@
+{
+  "meta": {
+    "titre": "Arbre de décision — Découverte & proposition de télégestion",
+    "version": "1.0",
+    "date": "2026-10-19",
+    "auteur": "Stan — Comatelec Schréder",
+    "usage": "Guide d'entretien en entonnoir pour les commerciaux : découverte du parc, exploitation, télégestion existante ou non, enjeux, puis recommandation et traitement des objections.",
+    "logique": "Chaque nœud 'question' propose des réponses ; chaque réponse renseigne un ou plusieurs faits (set) et indique le nœud suivant (next). Le nœud 'router' évalue ses règles dans l'ordre (première règle vraie) et oriente vers une recommandation. Les objections sont rattachées aux nœuds (objections) et consultables à tout moment."
+  },
+  "start": "intro_interlocuteur",
+  "phases": [
+    { "id": "contexte", "label": "Contexte", "couleur": "#5B6B7A" },
+    { "id": "parc", "label": "Comprendre le parc", "couleur": "#1F6F8B" },
+    { "id": "exploitation", "label": "Exploitation & coûts", "couleur": "#2E7D5B" },
+    { "id": "telegestion", "label": "Télégestion existante", "couleur": "#B5651D" },
+    { "id": "enjeux", "label": "Enjeux & décision", "couleur": "#7A3E8E" },
+    { "id": "reco", "label": "Recommandation", "couleur": "#C0392B" }
+  ],
+  "nodes": {
+    "intro_interlocuteur": {
+      "type": "question",
+      "phase": "contexte",
+      "question": "Qui avez-vous en face de vous ?",
+      "pourquoi": "Le discours change : l'élu pense budget, image et administrés ; le technicien pense exploitation, pannes et charge de travail.",
+      "conseils": {
+        "elu": "Parlez résultats : économies, sobriété, réactivité face aux plaintes des habitants. Évitez le jargon (NEMA, Zhaga, mesh).",
+        "tech": "Parlez quotidien : tournées de nuit, délais de réparation, programmation des horaires. Vous pouvez être technique."
+      },
+      "reponses": [
+        { "label": "Élu(s) / maire / adjoint", "set": { "profil": "elu" }, "next": "p1_taille" },
+        { "label": "Services techniques (resp. EP, DST)", "set": { "profil": "tech" }, "next": "p1_taille" },
+        { "label": "Les deux", "set": { "profil": "mixte" }, "next": "p1_taille" }
+      ]
+    },
+
+    "p1_taille": {
+      "type": "question",
+      "phase": "parc",
+      "question": "Combien de points lumineux compte votre commune ?",
+      "pourquoi": "Dimensionne le projet et le potentiel d'économies. Au-delà de quelques centaines de points, le suivi manuel devient difficile.",
+      "conseils": {
+        "elu": "« Savez-vous combien de lampadaires éclairent votre commune ? » — une question simple qui ouvre la discussion.",
+        "tech": "Demandez si le chiffre vient d'un inventaire récent ou d'une estimation."
+      },
+      "reponses": [
+        { "label": "Moins de 500", "set": { "taille": "petite" }, "next": "p1_armoires" },
+        { "label": "500 à 3 000", "set": { "taille": "moyenne" }, "next": "p1_armoires" },
+        { "label": "Plus de 3 000", "set": { "taille": "grande" }, "next": "p1_armoires" },
+        { "label": "Ne sait pas", "set": { "taille": "inconnue" }, "next": "p1_armoires", "signal": "Absence de visibilité sur le parc : la télégestion apporte un inventaire vivant." }
+      ]
+    },
+
+    "p1_armoires": {
+      "type": "question",
+      "phase": "parc",
+      "question": "Combien d'armoires de commande alimentent le réseau ?",
+      "pourquoi": "Chaque armoire est un point d'entrée simple pour une première télégestion (horloge connectée).",
+      "conseils": {
+        "elu": "Inutile d'insister si l'élu ne sait pas : notez la question pour les services techniques.",
+        "tech": "Demandez aussi leur état : armoires vétustes = occasion de moderniser en même temps."
+      },
+      "reponses": [
+        { "label": "Moins de 20", "set": { "armoires": "peu" }, "next": "p1_inventaire" },
+        { "label": "20 à 100", "set": { "armoires": "moyen" }, "next": "p1_inventaire" },
+        { "label": "Plus de 100", "set": { "armoires": "beaucoup" }, "next": "p1_inventaire" },
+        { "label": "Ne sait pas", "set": { "armoires": "inconnu" }, "next": "p1_inventaire" }
+      ]
+    },
+
+    "p1_inventaire": {
+      "type": "question",
+      "phase": "parc",
+      "question": "Disposez-vous d'un inventaire ou d'une cartographie à jour du parc (SIG) ?",
+      "pourquoi": "Un inventaire incomplet est un point de douleur : la plateforme de télégestion géolocalise chaque équipement et tient l'inventaire à jour.",
+      "conseils": {
+        "elu": "« Si un habitant signale un lampadaire en panne, savez-vous immédiatement lequel c'est ? »",
+        "tech": "Demandez le format (Excel, SIG, papier) et qui le met à jour."
+      },
+      "reponses": [
+        { "label": "Oui, à jour", "set": { "inventaire": "ok" }, "next": "p1_led" },
+        { "label": "Partiel ou ancien", "set": { "inventaire": "partiel" }, "next": "p1_led", "signal": "Opportunité : inventaire automatique via la plateforme." },
+        { "label": "Non", "set": { "inventaire": "non" }, "next": "p1_led", "signal": "Opportunité forte : la télégestion devient l'outil de connaissance du patrimoine." }
+      ]
+    },
+
+    "p1_led": {
+      "type": "question",
+      "phase": "parc",
+      "question": "Quelle part du parc est déjà rénovée en LED ?",
+      "pourquoi": "Question clé : la télégestion au point lumineux suppose des luminaires LED pilotables. Un parc peu rénové oriente d'abord vers l'armoire.",
+      "conseils": {
+        "elu": "« Combien de vos lampadaires sont déjà passés en LED ? »",
+        "tech": "Demandez les années de rénovation et les marques : les luminaires récents sont souvent équipés d'une prise NEMA ou Zhaga."
+      },
+      "reponses": [
+        { "label": "Moins de 30 %", "set": { "led": "faible" }, "next": "p1_renov" },
+        { "label": "30 à 70 %", "set": { "led": "moyen" }, "next": "p1_renov" },
+        { "label": "Plus de 70 %", "set": { "led": "fort" }, "next": "p1_renov", "signal": "Parc prêt pour la télégestion au point lumineux." }
+      ]
+    },
+
+    "p1_renov": {
+      "type": "question",
+      "phase": "parc",
+      "question": "Un programme de rénovation est-il prévu dans les 3 prochaines années ?",
+      "pourquoi": "Si oui, c'est le moment idéal : prévoir des luminaires équipés de prises NEMA/Zhaga coûte peu et évite de revenir plus tard.",
+      "conseils": {
+        "elu": "Faites le lien avec le mandat : un projet visible, mesurable, finançable.",
+        "tech": "Demandez le phasage par zones et si un cahier des charges est en cours de rédaction."
+      },
+      "reponses": [
+        { "label": "Oui, budgété", "set": { "renov_prevue": "budgete" }, "next": "p1_pilotage", "signal": "Intégrer la télégestion dès maintenant dans le projet." },
+        { "label": "Oui, en réflexion", "set": { "renov_prevue": "reflexion" }, "next": "p1_pilotage" },
+        { "label": "Non", "set": { "renov_prevue": "non" }, "next": "p1_pilotage" }
+      ]
+    },
+
+    "p1_pilotage": {
+      "type": "question",
+      "phase": "parc",
+      "question": "Comment l'allumage et l'extinction sont-ils pilotés aujourd'hui ?",
+      "pourquoi": "Révèle le niveau de maîtrise : chaque changement d'horaire nécessite-t-il un déplacement en armoire ?",
+      "conseils": {
+        "elu": "« Lors du dernier changement d'horaires, combien de temps a-t-il fallu pour l'appliquer partout ? »",
+        "tech": "Demandez combien de temps prend une reprogrammation complète des armoires."
+      },
+      "reponses": [
+        { "label": "Cellules photoélectriques", "set": { "pilotage": "cellule" }, "next": "p1_sobriete", "objections": ["o_horloge"] },
+        { "label": "Horloges (astronomiques) en armoire", "set": { "pilotage": "horloge" }, "next": "p1_sobriete", "objections": ["o_horloge"] },
+        { "label": "Manuel ou hétérogène", "set": { "pilotage": "manuel" }, "next": "p1_sobriete", "signal": "Gros gain de temps à démontrer." },
+        { "label": "Ne sait pas", "set": { "pilotage": "inconnu" }, "next": "p1_sobriete" }
+      ]
+    },
+
+    "p1_sobriete": {
+      "type": "question",
+      "phase": "parc",
+      "question": "Pratiquez-vous l'extinction ou l'abaissement en cœur de nuit ?",
+      "pourquoi": "La sobriété est un sujet politique fort. La télégestion permet d'ajuster finement (zones, horaires, événements) sans déplacement.",
+      "conseils": {
+        "elu": "Évoquez les retours des habitants : sécurité, biodiversité, ciel étoilé. La télégestion permet d'ajuster sans trancher en tout ou rien.",
+        "tech": "Demandez comment sont gérées les exceptions (fêtes, 14 juillet, marchés de Noël)."
+      },
+      "reponses": [
+        { "label": "Extinction totale en cœur de nuit", "set": { "sobriete": "extinction" }, "next": "p2_exploitant", "objections": ["o_extinction"] },
+        { "label": "Abaissement programmé dans les luminaires LED", "set": { "sobriete": "abaissement_fixe" }, "next": "p2_exploitant", "signal": "Profil figé : la télégestion le rend modifiable à distance." },
+        { "label": "Ni l'un ni l'autre", "set": { "sobriete": "aucune" }, "next": "p2_exploitant", "signal": "Gisement d'économies important." },
+        { "label": "C'est en débat", "set": { "sobriete": "debat" }, "next": "p2_exploitant", "signal": "Proposer de tester des scénarios sur une zone." }
+      ]
+    },
+
+    "p2_exploitant": {
+      "type": "question",
+      "phase": "exploitation",
+      "question": "Qui s'occupe de l'exploitation et de la maintenance de l'éclairage public ?",
+      "pourquoi": "Identifie qui intervient, qui facture et qui sera utilisateur de la télégestion.",
+      "conseils": {
+        "elu": "« Qui intervient quand un lampadaire tombe en panne ? »",
+        "tech": "Demandez la répartition exacte : réglages, dépannage, travaux neufs."
+      },
+      "reponses": [
+        { "label": "La régie (agents communaux)", "set": { "exploitation": "regie" }, "next": "p2_pannes", "objections": ["o_competences"] },
+        { "label": "Un installateur (marché de maintenance)", "set": { "exploitation": "installateur" }, "next": "p2_contrat", "objections": ["o_installateur"] },
+        { "label": "Le syndicat d'énergie (compétence transférée)", "set": { "exploitation": "syndicat" }, "next": "p2_syndicat" },
+        { "label": "Mixte (régie + installateur)", "set": { "exploitation": "mixte" }, "next": "p2_contrat" }
+      ]
+    },
+
+    "p2_contrat": {
+      "type": "question",
+      "phase": "exploitation",
+      "question": "Quand arrive l'échéance du marché de maintenance, et que comprend-il ?",
+      "pourquoi": "Un renouvellement proche est la meilleure fenêtre pour inscrire la télégestion dans le cahier des charges.",
+      "conseils": {
+        "elu": "« Le prochain marché est l'occasion de reprendre la main sur le suivi de votre éclairage. »",
+        "tech": "Demandez si le marché inclut des tournées de nuit, des pénalités de délai, du reporting."
+      },
+      "reponses": [
+        { "label": "Moins d'un an", "set": { "echeance": "proche" }, "next": "p2_pannes", "signal": "Fenêtre idéale : proposer d'aider à rédiger les prescriptions." },
+        { "label": "1 à 3 ans", "set": { "echeance": "moyenne" }, "next": "p2_pannes" },
+        { "label": "Plus de 3 ans", "set": { "echeance": "lointaine" }, "next": "p2_pannes", "objections": ["o_contrat"] },
+        { "label": "Ne sait pas", "set": { "echeance": "inconnue" }, "next": "p2_pannes" }
+      ]
+    },
+
+    "p2_syndicat": {
+      "type": "question",
+      "phase": "exploitation",
+      "question": "Quel rôle joue le syndicat d'énergie ?",
+      "pourquoi": "Le syndicat peut être décideur, financeur ou prescripteur : il faut savoir qui embarquer.",
+      "conseils": {
+        "elu": "Demandez si la commune peut demander une option télégestion au syndicat.",
+        "tech": "Demandez si le syndicat a déjà une plateforme ou une stratégie de télégestion à l'échelle du département."
+      },
+      "reponses": [
+        { "label": "Travaux + exploitation", "set": { "role_syndicat": "complet" }, "next": "p2_pannes", "signal": "Le syndicat est un interlocuteur à rencontrer en parallèle." },
+        { "label": "Travaux uniquement", "set": { "role_syndicat": "travaux" }, "next": "p2_pannes" },
+        { "label": "Achat d'énergie / conseil", "set": { "role_syndicat": "conseil" }, "next": "p2_pannes" }
+      ]
+    },
+
+    "p2_pannes": {
+      "type": "question",
+      "phase": "exploitation",
+      "question": "Comment détectez-vous les pannes aujourd'hui ?",
+      "pourquoi": "Point de douleur n°1 dans la plupart des communes. La télégestion signale la panne avant l'habitant.",
+      "conseils": {
+        "elu": "« Combien de fois par mois êtes-vous interpellé par un habitant pour un lampadaire éteint ? »",
+        "tech": "Demandez la fréquence et le coût des tournées de nuit."
+      },
+      "reponses": [
+        { "label": "Signalements des habitants ou élus", "set": { "detection": "citoyens" }, "next": "p2_delai", "signal": "La commune découvre ses pannes par ses administrés : argument fort." },
+        { "label": "Tournées de nuit", "set": { "detection": "tournees" }, "next": "p2_delai", "signal": "Coût de tournées à chiffrer et à comparer." },
+        { "label": "Alertes automatiques", "set": { "detection": "alertes" }, "next": "p2_delai" },
+        { "label": "Pas de méthode établie", "set": { "detection": "aucune" }, "next": "p2_delai" }
+      ]
+    },
+
+    "p2_delai": {
+      "type": "question",
+      "phase": "exploitation",
+      "question": "Quel est le délai moyen entre une panne et sa réparation ?",
+      "pourquoi": "Mesure la qualité de service perçue par les habitants. La télégestion réduit la détection à quelques heures et permet une intervention ciblée.",
+      "conseils": {
+        "elu": "Reliez au ressenti des habitants : sentiment d'insécurité, image de la commune.",
+        "tech": "Demandez combien de déplacements sont nécessaires (diagnostic puis réparation)."
+      },
+      "reponses": [
+        { "label": "Moins de 48 h", "set": { "delai": "court" }, "next": "p2_cout" },
+        { "label": "Environ une semaine", "set": { "delai": "moyen" }, "next": "p2_cout" },
+        { "label": "Plus d'une semaine", "set": { "delai": "long" }, "next": "p2_cout", "signal": "Qualité de service à améliorer : argument fort pour les élus." },
+        { "label": "Ne sait pas", "set": { "delai": "inconnu" }, "next": "p2_cout", "signal": "Pas de mesure = pas de pilotage. La plateforme fournit ces indicateurs." }
+      ]
+    },
+
+    "p2_cout": {
+      "type": "question",
+      "phase": "exploitation",
+      "question": "Connaissez-vous le coût annuel de l'éclairage public (énergie + maintenance) ?",
+      "pourquoi": "Base du calcul de retour sur investissement. Sans chiffre, proposer de l'établir ensemble.",
+      "conseils": {
+        "elu": "L'éclairage public pèse souvent lourd dans la facture d'électricité de la commune : demandez l'ordre de grandeur.",
+        "tech": "Demandez les consommations par armoire et le montant du marché de maintenance."
+      },
+      "reponses": [
+        { "label": "Oui, précisément", "set": { "cout_connu": "oui" }, "next": "p2_budget" },
+        { "label": "Approximativement", "set": { "cout_connu": "approx" }, "next": "p2_budget" },
+        { "label": "Non", "set": { "cout_connu": "non" }, "next": "p2_budget", "signal": "Proposer un diagnostic chiffré : la télégestion mesure la consommation réelle." }
+      ]
+    },
+
+    "p2_budget": {
+      "type": "question",
+      "phase": "exploitation",
+      "question": "Comment se présente le budget d'investissement éclairage cette année ?",
+      "pourquoi": "Oriente vers un projet global, un phasage ou un pilote, et vers les aides possibles.",
+      "conseils": {
+        "elu": "Mentionnez les financements possibles (CEE, DETR/DSIL, Fonds vert, aides du syndicat) — à vérifier selon l'année.",
+        "tech": "Demandez si des dossiers de subvention sont déjà en cours."
+      },
+      "reponses": [
+        { "label": "Contraint ou gelé", "set": { "budget": "contraint" }, "next": "p3_tg", "objections": ["o_cout_invest"] },
+        { "label": "Disponible", "set": { "budget": "ok" }, "next": "p3_tg" },
+        { "label": "Dépend des subventions", "set": { "budget": "subventions" }, "next": "p3_tg", "objections": ["o_cout_invest"] }
+      ]
+    },
+
+    "p3_tg": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "La commune dispose-t-elle déjà d'une télégestion ?",
+      "pourquoi": "Question pivot : elle sépare l'arbre en deux branches (améliorer l'existant ou démarrer).",
+      "conseils": {
+        "elu": "Reformulez si besoin : « Pouvez-vous voir et piloter votre éclairage depuis un ordinateur ? »",
+        "tech": "Précisez : armoire, point lumineux, ou les deux."
+      },
+      "reponses": [
+        { "label": "Oui", "set": { "tg_existante": "oui" }, "next": "p3o_niveau" },
+        { "label": "Non", "set": { "tg_existante": "non" }, "next": "p3n_pourquoi" },
+        { "label": "Ne sait pas", "next": "p3_tg_indices" }
+      ]
+    },
+
+    "p3_tg_indices": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Recevez-vous des alertes de panne ou consultez-vous vos consommations sur un logiciel ?",
+      "pourquoi": "Permet de lever le doute sans jargon.",
+      "conseils": {
+        "elu": "Si toujours flou, proposez de poser la question aux services techniques.",
+        "tech": "Demandez s'il existe un modem ou une horloge communicante dans les armoires."
+      },
+      "reponses": [
+        { "label": "Oui", "set": { "tg_existante": "oui" }, "next": "p3o_niveau" },
+        { "label": "Non", "set": { "tg_existante": "non" }, "next": "p3n_pourquoi" }
+      ]
+    },
+
+    "p3o_niveau": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "À quel niveau la télégestion est-elle installée ?",
+      "pourquoi": "L'armoire pilote un départ entier ; le point lumineux pilote chaque luminaire (abaissement fin, panne individuelle).",
+      "conseils": {
+        "elu": "« Pouvez-vous agir sur un lampadaire précis, ou seulement sur une rue entière ? »",
+        "tech": "Demandez le type de matériel : horloge connectée, nœuds NEMA, nœuds Zhaga."
+      },
+      "reponses": [
+        { "label": "À l'armoire", "set": { "tg_niveau": "armoire" }, "next": "p3o_anciennete" },
+        { "label": "Au point lumineux", "set": { "tg_niveau": "pl" }, "next": "p3o_anciennete" },
+        { "label": "Les deux", "set": { "tg_niveau": "les_deux" }, "next": "p3o_anciennete" }
+      ]
+    },
+
+    "p3o_anciennete": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Depuis quand, et s'agit-il d'une expérimentation ou d'un déploiement ?",
+      "pourquoi": "Un pilote qui stagne est une opportunité de généralisation ; une solution ancienne peut être obsolète.",
+      "conseils": {
+        "elu": "Demandez quels résultats du pilote ont été présentés en conseil.",
+        "tech": "Demandez si le pilote a des critères d'évaluation définis."
+      },
+      "reponses": [
+        { "label": "Expérimentation / pilote en cours", "set": { "tg_statut": "pilote" }, "next": "p3o_couverture" },
+        { "label": "Déployée depuis moins de 3 ans", "set": { "tg_statut": "recent" }, "next": "p3o_couverture" },
+        { "label": "Déployée depuis plus de 3 ans", "set": { "tg_statut": "ancien" }, "next": "p3o_couverture" }
+      ]
+    },
+
+    "p3o_couverture": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Quelle part du parc est couverte par la télégestion ?",
+      "pourquoi": "Mesure le potentiel d'extension.",
+      "conseils": {
+        "elu": "« Une partie de la commune est pilotée, l'autre non : est-ce un choix ? »",
+        "tech": "Demandez combien d'armoires et combien de points lumineux sont équipés."
+      },
+      "reponses": [
+        { "label": "Moins de 25 %", "set": { "tg_couverture": "faible" }, "next": "p3o_fournisseur" },
+        { "label": "25 à 75 %", "set": { "tg_couverture": "moyenne" }, "next": "p3o_fournisseur" },
+        { "label": "Plus de 75 %", "set": { "tg_couverture": "forte" }, "next": "p3o_fournisseur" }
+      ]
+    },
+
+    "p3o_fournisseur": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Avec quelle solution, et est-elle ouverte à d'autres équipements ?",
+      "pourquoi": "Une solution propriétaire enferme le client ; une solution ouverte (protocole TALQ, prises NEMA/Zhaga) laisse le choix du matériel.",
+      "conseils": {
+        "elu": "« Si demain vous changez de fournisseur de luminaires, votre système suivra-t-il ? »",
+        "tech": "Demandez si la plateforme est certifiée TALQ et si elle accepte des nœuds tiers."
+      },
+      "reponses": [
+        { "label": "Solution Schréder (Exedra)", "set": { "tg_fournisseur": "schreder" }, "next": "p3o_usage" },
+        { "label": "Autre solution, ouverte", "set": { "tg_fournisseur": "autre_ouvert" }, "next": "p3o_usage" },
+        { "label": "Autre solution, propriétaire", "set": { "tg_fournisseur": "autre_proprio" }, "next": "p3o_usage", "objections": ["o_dependance"], "signal": "Argument interopérabilité à développer." },
+        { "label": "Ne sait pas", "set": { "tg_fournisseur": "inconnu" }, "next": "p3o_usage" }
+      ]
+    },
+
+    "p3o_usage": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Qui utilise la plateforme, et à quelle fréquence ?",
+      "pourquoi": "Une télégestion installée mais non utilisée ne produit aucune valeur : c'est un signal d'accompagnement ou de remplacement.",
+      "conseils": {
+        "elu": "« Avez-vous accès aux tableaux de bord vous-même ? »",
+        "tech": "Demandez combien d'utilisateurs et quelles fonctions sont réellement utilisées."
+      },
+      "reponses": [
+        { "label": "Les services, au quotidien", "set": { "tg_usage": "quotidien" }, "next": "p3o_positifs" },
+        { "label": "Ponctuellement", "set": { "tg_usage": "ponctuel" }, "next": "p3o_positifs" },
+        { "label": "Uniquement l'installateur", "set": { "tg_usage": "installateur" }, "next": "p3o_positifs", "signal": "La commune n'a pas la main sur ses données." },
+        { "label": "Plus personne", "set": { "tg_usage": "abandon" }, "next": "p3o_positifs", "signal": "Outil abandonné : comprendre pourquoi." }
+      ]
+    },
+
+    "p3o_positifs": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Qu'est-ce qui vous satisfait le plus dans votre télégestion ?",
+      "pourquoi": "Identifier ce qu'il faut conserver et valoriser dans la proposition.",
+      "conseils": {
+        "elu": "Laissez parler : ces points positifs sont vos futurs arguments.",
+        "tech": "Notez les fonctions jugées indispensables."
+      },
+      "reponses": [
+        { "label": "Détection des pannes", "set": { "tg_plus": "pannes" }, "next": "p3o_negatifs" },
+        { "label": "Économies d'énergie", "set": { "tg_plus": "energie" }, "next": "p3o_negatifs" },
+        { "label": "Programmation à distance", "set": { "tg_plus": "programmation" }, "next": "p3o_negatifs" },
+        { "label": "Pas grand-chose", "set": { "tg_plus": "rien" }, "next": "p3o_negatifs" }
+      ]
+    },
+
+    "p3o_negatifs": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Et qu'est-ce qui vous déçoit ou vous manque ?",
+      "pourquoi": "Les points négatifs dessinent la proposition de valeur.",
+      "conseils": {
+        "elu": "Reformulez pour montrer que vous avez compris avant de répondre.",
+        "tech": "Creusez : fiabilité des communications, ergonomie, support, coûts récurrents."
+      },
+      "reponses": [
+        { "label": "Coût / abonnement", "set": { "tg_moins": "cout" }, "next": "p3o_satisfaction", "objections": ["o_abonnement"] },
+        { "label": "Outil complexe", "set": { "tg_moins": "complexite" }, "next": "p3o_satisfaction", "objections": ["o_competences"] },
+        { "label": "Communications peu fiables", "set": { "tg_moins": "fiabilite" }, "next": "p3o_satisfaction", "objections": ["o_reseau"] },
+        { "label": "Fonctions limitées", "set": { "tg_moins": "fonctions" }, "next": "p3o_satisfaction" },
+        { "label": "Rien de notable", "set": { "tg_moins": "rien" }, "next": "p3o_satisfaction" }
+      ]
+    },
+
+    "p3o_satisfaction": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Globalement, quelle note donneriez-vous à votre télégestion sur 10 ?",
+      "pourquoi": "Synthèse qui oriente : améliorer et étendre, ou remplacer.",
+      "conseils": {
+        "elu": "Une note sous 7 ouvre la porte à une alternative.",
+        "tech": "Demandez ce qui ferait passer la note à 9."
+      },
+      "reponses": [
+        { "label": "8 à 10", "set": { "tg_satisfaction": "bonne" }, "next": "p4_priorite" },
+        { "label": "5 à 7", "set": { "tg_satisfaction": "moyenne" }, "next": "p4_priorite" },
+        { "label": "Moins de 5", "set": { "tg_satisfaction": "mauvaise" }, "next": "p4_priorite" }
+      ]
+    },
+
+    "p3n_pourquoi": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Pourquoi n'avez-vous pas de télégestion aujourd'hui ?",
+      "pourquoi": "Fait émerger le frein principal : c'est l'objection à traiter en priorité.",
+      "conseils": {
+        "elu": "Question ouverte, sans jugement : « Est-ce un choix, ou le sujet n'a jamais été mis sur la table ? »",
+        "tech": "Demandez si la question a déjà été étudiée et pourquoi elle n'a pas abouti."
+      },
+      "reponses": [
+        { "label": "On ne nous l'a jamais proposée", "set": { "frein": "jamais_propose" }, "next": "p3n_connaissance", "signal": "Terrain vierge : pédagogie d'abord." },
+        { "label": "Trop cher", "set": { "frein": "cout" }, "next": "p3n_connaissance", "objections": ["o_abonnement", "o_roi"] },
+        { "label": "Pas besoin, ça fonctionne", "set": { "frein": "pas_besoin" }, "next": "p3n_connaissance", "objections": ["o_ca_marche"] },
+        { "label": "Trop complexe pour nos équipes", "set": { "frein": "complexite" }, "next": "p3n_connaissance", "objections": ["o_competences", "o_complexite_install"] },
+        { "label": "Mauvaise expérience passée", "set": { "frein": "mauvaise_exp" }, "next": "p3n_connaissance", "objections": ["o_mauvaise_exp"] }
+      ]
+    },
+
+    "p3n_connaissance": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Que savez-vous de la télégestion de l'éclairage public ?",
+      "pourquoi": "Adapte le niveau d'explication. Si le client ne connaît pas, faites le pitch de 30 secondes (voir conseil).",
+      "conseils": {
+        "elu": "Pitch 30 s : « C'est piloter et surveiller votre éclairage depuis un ordinateur ou un téléphone : vous savez où sont les pannes avant vos habitants, vous réglez les horaires et l'intensité rue par rue sans déplacement, et vous mesurez vos économies. »",
+        "tech": "Pitch 30 s : « Horloge connectée en armoire et/ou nœud NEMA ou Zhaga sur chaque luminaire, communication cellulaire, plateforme web Exedra : alarmes, profils d'abaissement, consommations, inventaire géolocalisé. »"
+      },
+      "reponses": [
+        { "label": "Rien ou presque", "set": { "connaissance": "faible" }, "next": "p3n_compat" },
+        { "label": "Les grandes lignes", "set": { "connaissance": "moyenne" }, "next": "p3n_compat" },
+        { "label": "Bien informé (vu chez d'autres communes)", "set": { "connaissance": "forte" }, "next": "p3n_compat", "signal": "Demander ce qu'il a vu et ce qui l'a marqué." }
+      ]
+    },
+
+    "p3n_compat": {
+      "type": "question",
+      "phase": "telegestion",
+      "question": "Vos luminaires LED récents sont-ils équipés d'une prise NEMA ou Zhaga ?",
+      "pourquoi": "Si oui, le point lumineux est équipable rapidement : le nœud se clipse ou se visse sur la prise.",
+      "conseils": {
+        "elu": "Inutile de poser la question technique : proposez de le vérifier avec les services.",
+        "tech": "Demandez les références des luminaires ; vérifiez sur les fiches produits ou les plans de rénovation."
+      },
+      "reponses": [
+        { "label": "Oui", "set": { "compat": "oui" }, "next": "p4_priorite", "signal": "Équipement point lumineux rapide." },
+        { "label": "Non", "set": { "compat": "non" }, "next": "p4_priorite" },
+        { "label": "Ne sait pas", "set": { "compat": "inconnu" }, "next": "p4_priorite", "signal": "Action : vérifier les références des luminaires." }
+      ]
+    },
+
+    "p4_priorite": {
+      "type": "question",
+      "phase": "enjeux",
+      "question": "Quelle est votre priorité n°1 pour l'éclairage public dans les prochaines années ?",
+      "pourquoi": "Donne l'angle de la proposition : on vend la priorité du client, pas la technologie.",
+      "conseils": {
+        "elu": "Faites hiérarchiser : « Si vous ne deviez en garder qu'une ? »",
+        "tech": "Demandez la priorité fixée par les élus et celle du service : elles diffèrent parfois."
+      },
+      "reponses": [
+        { "label": "Réduire la facture d'énergie", "set": { "priorite": "energie" }, "next": "p4_decideur" },
+        { "label": "Sobriété et biodiversité", "set": { "priorite": "sobriete" }, "next": "p4_decideur" },
+        { "label": "Qualité de service / maintenance", "set": { "priorite": "maintenance" }, "next": "p4_decideur" },
+        { "label": "Sécurité et tranquillité publique", "set": { "priorite": "securite" }, "next": "p4_decideur" },
+        { "label": "Smart city et données", "set": { "priorite": "smartcity" }, "next": "p4_decideur" }
+      ]
+    },
+
+    "p4_decideur": {
+      "type": "question",
+      "phase": "enjeux",
+      "question": "Qui prend la décision, et selon quel calendrier ?",
+      "pourquoi": "Sans décideur ni échéance, pas de projet : identifier la prochaine étape réaliste.",
+      "conseils": {
+        "elu": "Demandez quand se tient le prochain arbitrage budgétaire.",
+        "tech": "Demandez qui porte le dossier auprès des élus et ce dont il a besoin pour convaincre."
+      },
+      "reponses": [
+        { "label": "Décision interne, sous 6 mois", "set": { "calendrier": "court" }, "next": "p4_engagement" },
+        { "label": "Conseil municipal / budget de l'an prochain", "set": { "calendrier": "budget_n1" }, "next": "p4_engagement", "objections": ["o_elus"] },
+        { "label": "Dépend du syndicat d'énergie", "set": { "calendrier": "syndicat" }, "next": "p4_engagement" },
+        { "label": "Pas de calendrier", "set": { "calendrier": "aucun" }, "next": "p4_engagement", "objections": ["o_pas_maintenant"] }
+      ]
+    },
+
+    "p4_engagement": {
+      "type": "question",
+      "phase": "enjeux",
+      "question": "Si nous vous démontrons un gain chiffré sur votre propre parc, seriez-vous prêt à étudier un projet ?",
+      "pourquoi": "Question de closing : elle teste l'appétence et oriente vers un projet ou un pilote.",
+      "conseils": {
+        "elu": "Proposez un livrable concret : une note chiffrée présentable en commission.",
+        "tech": "Proposez de construire l'étude ensemble à partir de leurs données."
+      },
+      "reponses": [
+        { "label": "Oui", "set": { "appetence": "chaud" }, "next": "router" },
+        { "label": "Oui, mais d'abord tester", "set": { "appetence": "test" }, "next": "router" },
+        { "label": "Pas maintenant", "set": { "appetence": "froid" }, "next": "router", "objections": ["o_pas_maintenant"] }
+      ]
+    },
+
+    "router": {
+      "type": "router",
+      "phase": "reco",
+      "regles": [
+        { "si": { "tg_existante": "oui", "tg_satisfaction": "mauvaise" }, "next": "R_MIGRATION", "raison": "Télégestion existante jugée insatisfaisante." },
+        { "si": { "tg_existante": "oui", "tg_usage": ["abandon", "installateur"], "tg_satisfaction": ["mauvaise", "moyenne"] }, "next": "R_MIGRATION", "raison": "Outil existant peu ou pas utilisé par la commune." },
+        { "si": { "tg_existante": "oui", "tg_statut": "pilote" }, "next": "R_GENERALISATION", "raison": "Pilote en cours à transformer en déploiement." },
+        { "si": { "tg_existante": "oui", "tg_niveau": "armoire", "led": ["moyen", "fort"] }, "next": "R_EXTENSION_PL", "raison": "Télégestion à l'armoire seulement, alors que le parc LED permet d'aller au point lumineux." },
+        { "si": { "tg_existante": "oui", "tg_couverture": "faible" }, "next": "R_GENERALISATION", "raison": "Couverture partielle du parc." },
+        { "si": { "tg_existante": "oui" }, "next": "R_SERVICES", "raison": "Télégestion en place et satisfaisante : enrichir les usages." },
+        { "si": { "frein": "mauvaise_exp" }, "next": "R_PILOTE", "raison": "Mauvaise expérience : rassurer par un test encadré." },
+        { "si": { "appetence": ["test", "froid"] }, "next": "R_PILOTE", "raison": "Le client veut voir avant de s'engager." },
+        { "si": { "led": "fort" }, "next": "R_PL", "raison": "Parc majoritairement LED, pilotable au point lumineux." },
+        { "si": { "led": "moyen" }, "next": "R_MIXTE", "raison": "Parc partiellement rénové : armoire partout, point lumineux sur les zones LED." },
+        { "si": { "renov_prevue": ["budgete", "reflexion"] }, "next": "R_RENOV", "raison": "Rénovation à venir : intégrer la télégestion dès la conception." },
+        { "si": {}, "next": "R_ARMOIRE", "raison": "Parc peu rénové : démarrer par l'armoire, rapide et peu coûteux." }
+      ]
+    },
+
+    "R_ARMOIRE": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Télégestion à l'armoire",
+      "accroche": "Reprendre la main sur tout le réseau rapidement, sans toucher aux luminaires.",
+      "solution": [
+        "Horloge connectée dans chaque armoire, pilotée depuis la plateforme Exedra",
+        "Programmation des horaires d'allumage/extinction à distance, par armoire ou par groupe",
+        "Alarmes : défaut d'alimentation, disjonction, anomalie de consommation",
+        "Mesure des consommations par armoire"
+      ],
+      "arguments": {
+        "elu": ["Mise en œuvre rapide et budget maîtrisé", "Fini les déplacements pour changer un horaire", "Première brique vers une commune connectée, sans tout refaire"],
+        "tech": ["Intervention limitée à l'armoire", "Détection des défauts de départ sans tournée", "Base évolutive : ajout du point lumineux au fil des rénovations"]
+      },
+      "etapes": ["Récupérer la liste et l'état des armoires", "Chiffrer le parc d'armoires", "Proposer une démonstration de la plateforme", "Préparer l'évolution vers le point lumineux lors des rénovations"],
+      "objections": ["o_horloge", "o_abonnement", "o_reseau"]
+    },
+
+    "R_PL": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Télégestion au point lumineux",
+      "accroche": "Piloter chaque luminaire : la bonne lumière, au bon endroit, au bon moment.",
+      "solution": [
+        "Nœud de contrôle NEMA ou Zhaga sur chaque luminaire LED",
+        "Profils d'abaissement personnalisés par rue ou par zone, modifiables à distance",
+        "Détection de panne luminaire par luminaire, géolocalisée",
+        "Mesure de la consommation réelle par point, option détection de présence",
+        "Plateforme Exedra, ouverte (protocole TALQ)"
+      ],
+      "arguments": {
+        "elu": ["Économies supplémentaires grâce à l'abaissement fin", "Réponse immédiate aux habitants : on sait où est la panne", "Sobriété pilotée et ajustable, sans tout éteindre"],
+        "tech": ["Interventions ciblées, moins de tournées", "Inventaire vivant du parc", "Équipement simple sur luminaires compatibles"]
+      },
+      "etapes": ["Vérifier la compatibilité NEMA/Zhaga des luminaires", "Étude de couverture réseau", "Chiffrage avec scénarios d'abaissement par zone", "Démonstration Exedra sur un cas proche"],
+      "objections": ["o_abonnement", "o_roi", "o_cyber", "o_dependance"]
+    },
+
+    "R_MIXTE": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Solution mixte : armoire + point lumineux",
+      "accroche": "Tout le réseau supervisé, et un pilotage fin là où le parc est rénové.",
+      "solution": [
+        "Horloges connectées sur toutes les armoires",
+        "Nœuds NEMA/Zhaga sur les zones LED et prioritaires",
+        "Une seule plateforme Exedra pour l'ensemble",
+        "Extension progressive au point lumineux au rythme des rénovations"
+      ],
+      "arguments": {
+        "elu": ["Couverture de toute la commune dès maintenant", "Investissement phasé selon le budget", "Résultats visibles rapidement sur les zones rénovées"],
+        "tech": ["Un seul outil pour tout le parc", "Priorisation des zones sensibles", "Pas de double système à gérer"]
+      },
+      "etapes": ["Cartographier zones LED / non LED", "Définir les zones prioritaires avec le client", "Chiffrage en deux tranches", "Planning de déploiement aligné sur les rénovations"],
+      "objections": ["o_cout_invest", "o_abonnement", "o_competences"]
+    },
+
+    "R_RENOV": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Intégrer la télégestion à la rénovation",
+      "accroche": "Rénover sans télégestion, c'est devoir revenir plus tard : on l'intègre dès maintenant.",
+      "solution": [
+        "Luminaires LED équipés de prises NEMA/Zhaga dans le cahier des charges",
+        "Nœuds et plateforme intégrés au projet de rénovation",
+        "Télégestion à l'armoire sur le reste du parc en attendant",
+        "Aide à la rédaction des prescriptions techniques"
+      ],
+      "arguments": {
+        "elu": ["Un seul chantier, un seul financement", "Économies maximales dès la mise en service", "Projet valorisable auprès des financeurs"],
+        "tech": ["Évite une seconde intervention sur les luminaires", "Matériel standardisé et interopérable", "Paramétrage prêt à la réception des travaux"]
+      },
+      "etapes": ["Récupérer le calendrier de rénovation", "Proposer des prescriptions pour le cahier des charges", "Chiffrer l'option télégestion", "Identifier les aides mobilisables"],
+      "objections": ["o_cout_invest", "o_complexite_install", "o_dependance"]
+    },
+
+    "R_PILOTE": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Pilote sur une zone test",
+      "accroche": "Tester en conditions réelles avant de décider, avec des critères de réussite clairs.",
+      "solution": [
+        "Une zone représentative (ex. 1 à 3 armoires et quelques dizaines de points lumineux)",
+        "Durée définie (6 à 12 mois)",
+        "Critères de réussite fixés ensemble : économies, délais de réparation, satisfaction",
+        "Bilan chiffré présenté aux élus en fin de pilote"
+      ],
+      "arguments": {
+        "elu": ["Risque limité, décision éclairée", "Résultats mesurés sur votre commune", "Un bilan prêt pour le conseil municipal"],
+        "tech": ["Prise en main progressive de l'outil", "Validation de la couverture réseau", "Retour d'expérience avant tout déploiement"]
+      },
+      "etapes": ["Choisir la zone test avec le client", "Fixer les indicateurs et la durée", "Former les utilisateurs", "Planifier le bilan à mi-parcours et final"],
+      "objections": ["o_mauvaise_exp", "o_pas_maintenant", "o_reseau"]
+    },
+
+    "R_MIGRATION": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Moderniser ou remplacer la télégestion existante",
+      "accroche": "Votre télégestion doit vous servir : on repart de vos irritants.",
+      "solution": [
+        "Audit de l'existant : matériel, usage, coûts, irritants",
+        "Migration vers la plateforme ouverte Exedra (TALQ), en conservant ce qui peut l'être",
+        "Accompagnement et formation des utilisateurs",
+        "Accès direct de la commune aux données, même si l'installateur exploite"
+      ],
+      "arguments": {
+        "elu": ["Un outil enfin utilisé et rentabilisé", "La commune garde la maîtrise de ses données", "Fin de la dépendance à une solution fermée"],
+        "tech": ["Interface simple, alertes utiles", "Interopérabilité avec les équipements tiers", "Support et formation"]
+      },
+      "etapes": ["Lister précisément les irritants exprimés", "Inventorier le matériel compatible", "Démonstration ciblée sur ces irritants", "Proposer une migration par étapes"],
+      "objections": ["o_mauvaise_exp", "o_dependance", "o_competences"]
+    },
+
+    "R_EXTENSION_PL": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Étendre la télégestion au point lumineux",
+      "accroche": "Vous pilotez vos armoires : passez au pilotage de chaque luminaire LED.",
+      "solution": [
+        "Nœuds NEMA/Zhaga sur les luminaires LED déjà installés",
+        "Profils d'abaissement par rue, détection de pannes individuelles",
+        "Intégration dans la même plateforme",
+        "Option détection de présence sur les zones adaptées"
+      ],
+      "arguments": {
+        "elu": ["Économies supplémentaires sur un parc déjà rénové", "Panne localisée au lampadaire près", "Sobriété fine sans extinction totale"],
+        "tech": ["Fin des recherches de panne à l'aveugle", "Profils modifiables sans déplacement", "Capitalise sur l'existant"]
+      },
+      "etapes": ["Compter les luminaires LED compatibles", "Choisir les zones prioritaires", "Chiffrer l'extension", "Démonstration des fonctions point lumineux"],
+      "objections": ["o_abonnement", "o_roi", "o_ondes"]
+    },
+
+    "R_GENERALISATION": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Généraliser la télégestion",
+      "accroche": "Le pilote ou la première tranche a fait ses preuves : étendons-le à toute la commune.",
+      "solution": [
+        "Bilan chiffré de la zone déjà équipée",
+        "Plan de déploiement par tranches sur le reste du parc",
+        "Harmonisation sur une plateforme unique",
+        "Montée en compétences des équipes"
+      ],
+      "arguments": {
+        "elu": ["Des résultats déjà mesurés sur la commune", "Égalité de service entre quartiers", "Économies multipliées à l'échelle du parc"],
+        "tech": ["Un seul mode d'exploitation pour tout le parc", "Retour d'expérience déjà acquis", "Déploiement maîtrisé"]
+      },
+      "etapes": ["Récupérer les résultats du pilote", "Construire la note de bilan pour les élus", "Chiffrer la généralisation par tranches", "Caler le calendrier budgétaire"],
+      "objections": ["o_cout_invest", "o_elus"]
+    },
+
+    "R_SERVICES": {
+      "type": "recommandation",
+      "phase": "reco",
+      "titre": "Enrichir les usages de la télégestion",
+      "accroche": "Votre télégestion fonctionne : faites-en un outil de pilotage de la ville.",
+      "solution": [
+        "Optimisation des profils d'abaissement par zone",
+        "Détection de présence sur zones à faible fréquentation",
+        "Capteurs complémentaires (trafic, environnement) sur le réseau d'éclairage",
+        "Tableaux de bord et rapports pour les élus"
+      ],
+      "arguments": {
+        "elu": ["Des données pour décider et communiquer", "Nouvelles économies sans nouveau réseau", "Image de commune innovante"],
+        "tech": ["Exploitation encore plus fine", "Rapports automatiques", "Réutilisation de l'infrastructure existante"]
+      },
+      "etapes": ["Analyser les données actuelles avec le client", "Identifier 2 ou 3 cas d'usage prioritaires", "Proposer un atelier smart city", "Chiffrer les compléments"],
+      "objections": ["o_cyber", "o_roi"]
+    }
+  },
+
+  "objections": {
+    "o_abonnement": {
+      "theme": "Coût",
+      "objection": "L'abonnement est trop cher.",
+      "reponse": "Comparons-le à ce qu'il fait économiser : moins de tournées de nuit, pannes détectées et réparées plus vite, abaissement fin qui réduit la consommation. La communication passe par le réseau cellulaire (4G / LTE-M) : aucune infrastructure à créer ni à entretenir. C'est comme les abonnements du quotidien (téléphone, musique, TV) : on paie un service qui rapporte plus qu'il ne coûte, et le retour sur investissement est généralement rapide.",
+      "rebond": "Combien vous coûte aujourd'hui une tournée de nuit ? Et une panne qui reste éteinte quinze jours ?"
+    },
+    "o_cout_invest": {
+      "theme": "Coût",
+      "objection": "Nous n'avons pas le budget d'investissement.",
+      "reponse": "Le projet peut être phasé : commencer par les armoires (peu coûteux), puis le point lumineux au fil des rénovations. Plusieurs financements peuvent être mobilisés selon les années : certificats d'économies d'énergie (CEE), DETR/DSIL, Fonds vert, aides du syndicat d'énergie. Les économies générées financent en partie les tranches suivantes.",
+      "rebond": "Votre syndicat d'énergie propose-t-il des aides pour l'éclairage ? Voulez-vous qu'on regarde ensemble les financements possibles ?"
+    },
+    "o_roi": {
+      "theme": "Coût",
+      "objection": "Le retour sur investissement est trop long.",
+      "reponse": "Le retour dépend de votre parc : énergie, maintenance, tournées évitées, durée de vie prolongée des LED grâce à l'abaissement. Plutôt qu'une moyenne nationale, je vous propose de le calculer sur vos propres chiffres.",
+      "rebond": "Pouvez-vous me transmettre vos consommations et le montant du marché de maintenance ? Je vous reviens avec un chiffrage."
+    },
+    "o_ca_marche": {
+      "theme": "Besoin",
+      "objection": "Ça fonctionne très bien comme ça.",
+      "reponse": "Tant mieux, l'objectif n'est pas de tout changer. Mais comment savez-vous aujourd'hui qu'un lampadaire est en panne, et depuis combien de temps ? La télégestion rend visible ce qui ne l'est pas : pannes, consommations réelles, dérives.",
+      "rebond": "Combien de signalements d'habitants avez-vous reçus le mois dernier ?"
+    },
+    "o_horloge": {
+      "theme": "Besoin",
+      "objection": "Nous avons déjà des horloges astronomiques / des cellules.",
+      "reponse": "L'horloge gère l'heure d'allumage, c'est tout. Elle ne signale pas une panne, ne mesure pas la consommation, et chaque modification oblige à se déplacer. L'horloge connectée fait la même chose, plus la supervision et le pilotage à distance.",
+      "rebond": "Lors du dernier changement d'horaires, combien d'armoires a-t-il fallu reprogrammer sur place ?"
+    },
+    "o_extinction": {
+      "theme": "Besoin",
+      "objection": "Nous éteignons la nuit, donc la télégestion ne sert à rien.",
+      "reponse": "L'extinction totale fait souvent débat (sécurité, événements, plaintes). La télégestion permet d'aller plus loin qu'un tout ou rien : abaissement plutôt qu'extinction sur certaines rues, rallumage ponctuel pour une fête ou un événement, horaires différents selon les quartiers, le tout sans déplacement.",
+      "rebond": "Comment gérez-vous les soirs de fête ou les demandes de rallumage d'un quartier ?"
+    },
+    "o_competences": {
+      "theme": "Organisation",
+      "objection": "Nos équipes n'ont ni le temps ni les compétences.",
+      "reponse": "La plateforme est une interface web avec des alertes : pas besoin d'être expert. La formation est prévue, et l'installateur peut exploiter l'outil pour vous. Surtout, la télégestion fait gagner du temps : moins de tournées, interventions ciblées.",
+      "rebond": "Combien d'heures par mois vos agents passent-ils à chercher des pannes ?"
+    },
+    "o_installateur": {
+      "theme": "Organisation",
+      "objection": "C'est notre installateur qui s'occupe de tout.",
+      "reponse": "Très bien : la télégestion lui facilite le travail (il sait où intervenir et avec quelle pièce) et la commune garde la visibilité sur son patrimoine et la qualité du service rendu. Elle peut aussi être inscrite dans le prochain marché.",
+      "rebond": "Aujourd'hui, comment contrôlez-vous les délais d'intervention de votre prestataire ?"
+    },
+    "o_contrat": {
+      "theme": "Organisation",
+      "objection": "On attend la fin du marché de maintenance.",
+      "reponse": "C'est justement le bon moment pour préparer la suite : on peut vous aider à rédiger les prescriptions télégestion du prochain cahier des charges. Et un pilote peut démarrer avant l'échéance.",
+      "rebond": "Quand commencez-vous à rédiger le nouveau cahier des charges ?"
+    },
+    "o_cyber": {
+      "theme": "Technique",
+      "objection": "Et la cybersécurité ?",
+      "reponse": "C'est une vraie question et elle est prise au sérieux : communications chiffrées, plateforme hébergée et sécurisée, gestion des droits par utilisateur, pas d'accès à vos réseaux informatiques internes. Nous pouvons fournir la documentation sécurité de la solution à votre DSI.",
+      "rebond": "Voulez-vous que nous organisions un échange avec votre service informatique ?"
+    },
+    "o_dependance": {
+      "theme": "Technique",
+      "objection": "On a peur d'être enfermés chez un fournisseur.",
+      "reponse": "La solution repose sur des standards ouverts : prises NEMA et Zhaga, protocole TALQ pour la plateforme. Vous gardez le choix de vos luminaires et de vos équipements, et la plateforme peut piloter des matériels tiers certifiés.",
+      "rebond": "Votre système actuel accepte-t-il d'autres marques que celle d'origine ?"
+    },
+    "o_reseau": {
+      "theme": "Technique",
+      "objection": "La couverture réseau est mauvaise chez nous.",
+      "reponse": "On réalise une étude de couverture avant tout projet. Selon les zones, des solutions complémentaires existent (réseau maillé entre luminaires). Et en cas de perte de communication, le luminaire continue d'appliquer son profil programmé : l'éclairage n'est jamais interrompu.",
+      "rebond": "Quelles zones vous semblent mal couvertes ? On peut commencer la vérification par là."
+    },
+    "o_complexite_install": {
+      "theme": "Technique",
+      "objection": "L'installation va être lourde, avec des travaux.",
+      "reponse": "À l'armoire, il s'agit de remplacer ou compléter l'horloge : quelques heures par armoire. Au point lumineux, sur un luminaire équipé d'une prise NEMA ou Zhaga, le nœud se pose en quelques minutes, sans câblage supplémentaire.",
+      "rebond": "Vos luminaires récents ont-ils une prise sur le dessus ou sous la crosse ?"
+    },
+    "o_ondes": {
+      "theme": "Technique",
+      "objection": "Les habitants vont s'inquiéter des ondes.",
+      "reponse": "Les nœuds émettent à faible puissance et de manière brève et intermittente, dans le respect des normes en vigueur, comparable à d'autres objets connectés du quotidien. Nous pouvons fournir les fiches de conformité.",
+      "rebond": "Souhaitez-vous un document d'information à destination des habitants ?"
+    },
+    "o_mauvaise_exp": {
+      "theme": "Confiance",
+      "objection": "Nous avons déjà eu une mauvaise expérience.",
+      "reponse": "Je comprends : qu'est-ce qui n'a pas fonctionné ? (laisser parler, reformuler). Je vous propose un pilote limité, avec des critères de réussite que vous fixez, et des références de communes comparables que vous pouvez contacter.",
+      "rebond": "Si on fixe ensemble trois critères de réussite, lesquels choisiriez-vous ?"
+    },
+    "o_elus": {
+      "theme": "Décision",
+      "objection": "Les élus ne sont pas convaincus / ont d'autres priorités.",
+      "reponse": "Donnons au porteur du dossier les bons arguments : économies chiffrées, sobriété maîtrisée, réactivité face aux habitants, image de la commune. Nous pouvons préparer une note de synthèse ou venir présenter en commission.",
+      "rebond": "Quel élu faudrait-il convaincre en priorité, et sur quel argument ?"
+    },
+    "o_pas_maintenant": {
+      "theme": "Décision",
+      "objection": "Ce n'est pas le moment.",
+      "reponse": "Pas de problème. Pour préparer le moment venu, je vous propose un diagnostic de votre parc et une estimation des gains : vous aurez les éléments en main pour le prochain arbitrage budgétaire.",
+      "rebond": "Quand se tient votre prochain arbitrage budgétaire ? Je vous recontacte un mois avant."
+    }
+  }
+}
